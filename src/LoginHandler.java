@@ -23,6 +23,7 @@ import java.net.UnknownHostException;
  * @author Cyril Rabat
  * @version 2015/06/25
  */
+//test
 class LoginHandler implements HttpHandler {
 
     public void handle(HttpExchange t) {
@@ -31,16 +32,16 @@ class LoginHandler implements HttpHandler {
         URI requestedUri = t.getRequestURI();
         String query = requestedUri.getRawQuery();
 
-        // Utilisation d'un flux pour lire les données du message Http
+        // Utilisation d'un flux pour lire les donnï¿½es du message Http
         BufferedReader br = null;
         try {
             br = new BufferedReader(new InputStreamReader(t.getRequestBody(),"utf-8"));
         } catch(UnsupportedEncodingException e) {
-            System.err.println("Erreur lors de la récupération du flux " + e);
+            System.err.println("Erreur lors de la rï¿½cupï¿½ration du flux " + e);
             System.exit(-1);
         }
 	
-        // Récupération des données en POST
+        // Rï¿½cupï¿½ration des donnï¿½es en POST
         try {
             query = br.readLine();
         } catch(IOException e) {
@@ -54,14 +55,14 @@ class LoginHandler implements HttpHandler {
     	try {
     	    socket = new Socket("localhost", ServeurTCP.portEcoute);
     	} catch(UnknownHostException e) {
-    	    System.err.println("Erreur sur l'hôte : " + e);
+    	    System.err.println("Erreur sur l'hï¿½te : " + e);
     	    System.exit(-1);
     	} catch(IOException e) {
-    	    System.err.println("Création de la socket impossible : " + e);
+    	    System.err.println("Crï¿½ation de la socket impossible : " + e);
     	    System.exit(-1);
     	}
      
-    	// Association d'un flux d'entrée et de sortie
+    	// Association d'un flux d'entrï¿½e et de sortie
     	BufferedReader input = null;
     	PrintWriter output = null;
     	try {
@@ -75,7 +76,7 @@ class LoginHandler implements HttpHandler {
     	// Envoi du couple login password
     	output.println(query);
      
-    	// Recupération de la réponse du serveur TCP
+    	// Recupï¿½ration de la rï¿½ponse du serveur TCP
     	String reponseTCP ="";
     	try {
     	    reponseTCP = input.readLine();
@@ -99,17 +100,17 @@ class LoginHandler implements HttpHandler {
         
     	//-------------------------------------------------------------------------//
  
-        // Envoi de l'en-tête Http
+        // Envoi de l'en-tï¿½te Http
         try {
             Headers h = t.getResponseHeaders();
             h.set("Content-Type", "text/html; charset=utf-8");
             t.sendResponseHeaders(200, reponse.length());
         } catch(IOException e) {
-            System.err.println("Erreur lors de l'envoi de l'en-tête : " + e);
+            System.err.println("Erreur lors de l'envoi de l'en-tï¿½te : " + e);
             System.exit(-1);
         }
 
-        // Envoi du corps (données HTML)
+        // Envoi du corps (donnï¿½es HTML)
         try {
             OutputStream os = t.getResponseBody();
             os.write(reponse.getBytes());
