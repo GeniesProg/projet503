@@ -16,8 +16,6 @@ import org.json.JSONObject;
 
 /**
  * Classe correspondant à un serveur TCP.
- * Le client envoie la chaine 'Bonjour' et lit une réponse de la part du serveur.
- * Le client envoie ensuite la chaine 'Au revoir' et lit une réponse.
  * Le numéro de port du serveur est spécifié dans la classe ServeurTCP.
  * @author Cyril Rabat
  * @version 07/10/2013
