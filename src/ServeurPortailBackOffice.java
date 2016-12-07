@@ -1,5 +1,6 @@
 import java.io.IOException;
 import com.sun.net.httpserver.HttpServer;
+
 import java.net.InetSocketAddress;
 
 /**
@@ -24,6 +25,7 @@ public class ServeurPortailBackOffice {
         serveur.createContext("/index.html", new IndexHandler());
         serveur.createContext("/admin.html", new AdminHandler());
         serveur.createContext("/user.html", new UserHandler());
+        serveur.createContext("/sondage.html", new SondageHandler());
         serveur.setExecutor(null);
         serveur.start();
         

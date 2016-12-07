@@ -1,4 +1,3 @@
-
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -6,35 +5,51 @@ import rmi.IArraySondage;
 import rmi.ISondage;
 
 import com.sun.net.httpserver.Headers;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
-public class UserHandler implements HttpHandler {
+
+public class SondageHandler implements HttpHandler{
 
 	public void handle(HttpExchange t) throws IOException {
-		String reponse = 
-		"<html>"
-		  +"<head>"
-		   + "<title>Page utilisateur</title>"
-		    +"<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>"
-		   +"<script>"		  
-		    +"</script>"
-		  +"</head>";
 		
+		String reponse = "<p>coucou y aura des sondages ici bientot</p>";
 		
-		reponse += "<body>"
-			+"<p>Page utilisateur</p>";
-		
-		IArraySondage so = null;
+		URI requestedUri = t.getRequestURI();
+        String query = requestedUri.getRawQuery();
 
-		// Récupération du sondage distant
+        // Utilisation d'un flux pour lire les donn�es du message Http
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(t.getRequestBody(),"utf-8"));
+        } catch(UnsupportedEncodingException e) {
+            System.err.println("Erreur lors de la r�cup�ration du flux " + e);
+            System.exit(-1);
+        }
+	
+        // R�cup�ration des donn�es en POST
+        try {
+            query = br.readLine();
+        } catch(IOException e) {
+            System.err.println("Erreur lors de la lecture d'une ligne " + e);
+            System.exit(-1);
+        }
+        String titre = query.split("=")[0];
+        String num = query.split("=")[1];
+        reponse += "<p>Vous avez choisi le sondage numéro "+ num +", "+titre+"</p>";
+        
+        ISondage s = null ;
 		try {
-		    so = (IArraySondage)Naming.lookup("rmi://localhost/sondages");
+		    s = (ISondage)Naming.lookup("rmi://localhost/sondage"+num);
 		} catch(NotBoundException e) {
 		    System.err.println("Pas possible d'accéder à l'objet distant (not bound): " + e);
 		    System.exit(-1);
@@ -46,30 +61,7 @@ public class UserHandler implements HttpHandler {
 		    System.exit(-1);
 		}
 		
-		ArrayList<ISondage> sondages = null;
-		try {
-			sondages = so.getSondages();
-		} catch (RemoteException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		String test = "";
-		for (int j = 0 ; j < sondages.size(); j++) {
-			try {				
-				test += "<form action=\"http://localhost:8080/sondage.html\" method=\"post\">"
-				  +"<button type=\"submit\" name=\""+sondages.get(j).getTitre()+"\" value=\""+sondages.get(j).getId()+"\" class=\"btn-link\">"+sondages.get(j).getTitre()+"</button>"
-				+"</form>";
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    }
-		
-		reponse += test;
-		
-		reponse += "</body>"
-		+"</html>";
+		reponse += "<p>" + s.affichage() + "</p>";
 		// Envoi de l'en-tête Http
         try {
             Headers h = t.getResponseHeaders();
@@ -88,5 +80,7 @@ public class UserHandler implements HttpHandler {
         } catch(IOException e) {
             System.err.println("Erreur lors de l'envoi du corps : " + e);
         }
+		
 	}
+
 }

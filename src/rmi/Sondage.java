@@ -34,5 +34,13 @@ public class Sondage extends UnicastRemoteObject implements ISondage {
     public String getTitre() throws RemoteException {
     	return this.titre;
     }
-
+    
+    public String affichage() throws RemoteException {
+    	String res = "<ul>" + this.id + ":" + this.titre;
+    	for (int i = 0; i < this.quesAndRep.size();i++) {
+    		res+= "<ul>"+quesAndRep.get(i)+"</ul>";
+    	}
+    	res+="</ul>";
+    	return res;
+    }
 }

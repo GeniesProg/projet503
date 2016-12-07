@@ -1,5 +1,6 @@
 package rmi;
 import java.rmi.Naming;
+import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
@@ -66,6 +67,12 @@ public class ServeurRMI {
     	    }
     	    
     	    Sondage s = new Sondage(sondage.getInt("id"), sondage.getString("titre"), tabQuestions);
+    	    try {
+				Naming.rebind("sondage"+s.getId(), s);
+			} catch (MalformedURLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
     	    sondages.add((ISondage)s);
     	      	
     	

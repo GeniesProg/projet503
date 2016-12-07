@@ -98,9 +98,9 @@ public class ServeurTCP {
 	    	message="<p>Connexion réussie, "+ element.getString("login") +" vous allez être redirigé vers votre portail.</p>";
 	    	int type = element.getInt("type");
 	    	if (type == 0) {
-	    		message+="<meta http-equiv=\"refresh\" content=\"3; url=http://localhost:8080/admin.html\">";	
+	    		message+="<meta http-equiv=\"refresh\" content=\"1; url=http://localhost:8080/admin.html\">";	
 	    	} else if (type == 1) {
-	    		message+="<meta http-equiv=\"refresh\" content=\"3; url=http://localhost:8080/user.html\">";
+	    		message+="<meta http-equiv=\"refresh\" content=\"1; url=http://localhost:8080/user.html\">";
 	    	}
 	    	
 	    }

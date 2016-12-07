@@ -15,4 +15,13 @@ public class Question {
 	public void setReponses(ArrayList<Reponse> reponses) {
 		this.reponses = new ArrayList<>(reponses);
 	}
+	
+	@Override 
+	public String toString() {
+		String res = this.numero + ":" + this.intitule;
+		for (int i = 0 ; i < this.reponses.size() ; i++) {
+			res+= "<li>"+this.reponses.get(i)+"</li>";
+		}
+		return res;
+	}
 }

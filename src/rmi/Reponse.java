@@ -7,4 +7,9 @@ public class Reponse {
 		this.num = num;
 		this.texte = texte;
 	}
+	
+	@Override
+	public String toString() {
+		return this.num + ":" + this.texte;
+	}
 }
