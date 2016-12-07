@@ -7,11 +7,7 @@ import java.io.OutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
-
-import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -104,7 +100,7 @@ class LoginHandler implements HttpHandler {
         try {
             Headers h = t.getResponseHeaders();
             h.set("Content-Type", "text/html; charset=utf-8");
-            t.sendResponseHeaders(200, reponse.length());
+            t.sendResponseHeaders(200, 0);
         } catch(IOException e) {
             System.err.println("Erreur lors de l'envoi de l'en-t�te : " + e);
             System.exit(-1);

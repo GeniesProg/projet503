@@ -8,9 +8,7 @@ import java.io.BufferedWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Scanner;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -27,13 +25,13 @@ public class ServeurTCP {
     public static final int portEcoute = 5001;
 
     public static void main(String[] args) {
-	// Création de la socket serveur
+	// Crï¿½ation de la socket serveur
 	ServerSocket socketServeur = null;
 	try {	
 	    socketServeur = new ServerSocket(portEcoute);
-	    System.out.println("Serveur TCP lancé");
+	    System.out.println("Serveur TCP lancï¿½");
 	} catch(IOException e) {
-	    System.err.println("Création de la socket impossible : " + e);
+	    System.err.println("Crï¿½ation de la socket impossible : " + e);
 	    System.exit(-1);
 	}
 
@@ -46,7 +44,7 @@ public class ServeurTCP {
 	    System.exit(-1);
 	}
 
-	// Association d'un flux d'entrée et de sortie
+	// Association d'un flux d'entrï¿½e et de sortie
 	BufferedReader input = null;
 	PrintWriter output = null;
 	try {
@@ -66,7 +64,7 @@ public class ServeurTCP {
 	    System.exit(-1);
 	}
 	
-	//Décomposition de la chaine pour obtenir le couple login mdp
+	//Dï¿½composition de la chaine pour obtenir le couple login mdp
 	String[] parts=message.split("&");
 	String part1=parts[0];
 	String part2=parts[1];
@@ -80,13 +78,13 @@ public class ServeurTCP {
 	// Ouverture du fichier
 		FileInputStream fs = null;
 		try {
-		    fs = new FileInputStream("F:/workspace/projet503/src/logs.json");
+		    fs = new FileInputStream("logs.json");
 		} catch(FileNotFoundException e) {
 		    System.err.println("Fichier logs.json introuvable");
 		    System.exit(-1);
 		}
 	 
-		// Récupération de la chaîne JSON depuis le fichier
+		// Rï¿½cupï¿½ration de la chaï¿½ne JSON depuis le fichier
 		String json = new String();
 		Scanner scanner = new Scanner(fs);
 		while(scanner.hasNext())
@@ -94,10 +92,10 @@ public class ServeurTCP {
 		scanner.close();
 	 
 		//System.out.println(json);
-		// Création d'un objet JSON
+		// Crï¿½ation d'un objet JSON
 		JSONObject objet = new JSONObject(json);
 	 
-		// Affichage à l'écran
+		// Affichage ï¿½ l'ï¿½cran
 		JSONArray tableau = objet.getJSONArray("users");
 		boolean validate=false;
 			int k =0;
@@ -105,12 +103,14 @@ public class ServeurTCP {
 			    JSONObject element = tableau.getJSONObject(k);
 			    if(element.getString("login").equals(log) && element.getString("password").equals(mdp)){
 			    	validate=true;
-			    	message="<p>Connexion réussie</p>";
+			    	message="<p>Connexion rÃ©ussie</p>";
+			    	//message+="<script>document.location.href='pageAdmin.html'</script>";
+			    	message+="<meta http-equiv=\"refresh\" content=\"3; url=http://localhost:8080/admin.html\">";
 			    }
 			    k++;
 			}
 	if(!validate) message="Mauvais couple login/password";
-	// Envoi de la réponse selon la validité
+	// Envoi de la rï¿½ponse selon la validitï¿½
 	output.println(message);
 	
 	

@@ -1,12 +1,11 @@
 import java.io.IOException;
 import com.sun.net.httpserver.HttpServer;
-import com.sun.net.httpserver.HttpContext;
 import java.net.InetSocketAddress;
 
 /**
  * Classe correspondant Ã  un serveur Http simple.
- * Le serveur écoute sur le port 8080 sur le contexte 'authentication.html'.
- * Le résultat est une simple page qui affiche les données envoyées en POST et en GET
+ * Le serveur ï¿½coute sur le port 8080 sur le contexte 'authentication.html'.
+ * Le rï¿½sultat est une simple page qui affiche les donnï¿½es envoyï¿½es en POST et en GET
  * @author Cyril Rabat
  * @version 2015/06/25
  */
@@ -17,20 +16,17 @@ public class ServeurPortailBackOffice {
         try {
             serveur = HttpServer.create(new InetSocketAddress(8080), 0);
         } catch(IOException e) {
-            System.err.println("Erreur lors de la création du serveur " + e);
+            System.err.println("Erreur lors de la crï¿½ation du serveur " + e);
             System.exit(-1);
         }
 
         serveur.createContext("/authentication.html", new LoginHandler());
+        serveur.createContext("/index.html", new IndexHandler());
+        serveur.createContext("/admin.html", new AdminHandler());
         serveur.setExecutor(null);
         serveur.start();
         
-        /*
-        serveur.createContext("/usersurvey.html", new UserSurveyHandler());
-        serveur.setExecutor(null);
-        serveur.start();
-         */
-	System.out.println("Serveur démarré. Pressez CRTL+C pour arrêter.");
+	System.out.println("Serveur dï¿½marrï¿½. Pressez CRTL+C pour arrï¿½ter.");
     }
 
 }
