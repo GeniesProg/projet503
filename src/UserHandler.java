@@ -21,7 +21,7 @@ public class UserHandler implements HttpHandler {
         try {
             Headers h = t.getResponseHeaders();
             h.set("Content-Type", "text/html; charset=utf-8");
-            t.sendResponseHeaders(200, reponse.length());
+            t.sendResponseHeaders(200, 0);
         } catch(IOException e) {
             System.err.println("Erreur lors de l'envoi de l'en-tête : " + e);
             System.exit(-1);
