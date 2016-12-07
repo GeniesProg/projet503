@@ -14,12 +14,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 
-/**
- * Classe correspondant au handler sur le contexte 'authentication.html'.
- * @author Cyril Rabat
- * @version 2015/06/25
- */
-//test
+
 class LoginHandler implements HttpHandler {
 
     public void handle(HttpExchange t) {

@@ -12,14 +12,6 @@ import java.util.Scanner;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/**
- * Classe correspondant à un serveur TCP.
- * Le client envoie la chaine 'Bonjour' et lit une réponse de la part du serveur.
- * Le client envoie ensuite la chaine 'Au revoir' et lit une réponse.
- * Le numéro de port du serveur est spécifié dans la classe ServeurTCP.
- * @author Cyril Rabat
- * @version 07/10/2013
- */
 public class ServeurTCP {
 
     public static final int portEcoute = 5001;
@@ -76,44 +68,47 @@ public class ServeurTCP {
 	//Comparaison du couple avec ceux contenus dans le fichier logs.json
 	
 	// Ouverture du fichier
-		FileInputStream fs = null;
-		try {
-		    fs = new FileInputStream("logs.json");
-		} catch(FileNotFoundException e) {
-		    System.err.println("Fichier logs.json introuvable");
-		    System.exit(-1);
-		}
-	 
-		// R�cup�ration de la cha�ne JSON depuis le fichier
-		String json = new String();
-		Scanner scanner = new Scanner(fs);
-		while(scanner.hasNext())
-		    json += scanner.nextLine();
-		scanner.close();
-	 
-		//System.out.println(json);
-		// Cr�ation d'un objet JSON
-		JSONObject objet = new JSONObject(json);
-	 
-		// Affichage � l'�cran
-		JSONArray tableau = objet.getJSONArray("users");
-		boolean validate=false;
-			int k =0;
-			while(!validate && k<tableau.length()){
-			    JSONObject element = tableau.getJSONObject(k);
-			    if(element.getString("login").equals(log) && element.getString("password").equals(mdp)){
-			    	validate=true;
-			    	message="<p>Connexion réussie</p>";
-			    	//message+="<script>document.location.href='pageAdmin.html'</script>";
-			    	message+="<meta http-equiv=\"refresh\" content=\"3; url=http://localhost:8080/admin.html\">";
-			    }
-			    k++;
-			}
+	FileInputStream fs = null;
+	try {
+	    fs = new FileInputStream("logs.json");
+	} catch(FileNotFoundException e) {
+	    System.err.println("Fichier logs.json introuvable");
+	    System.exit(-1);
+	}
+ 
+	// R�cup�ration de la cha�ne JSON depuis le fichier
+	String json = new String();
+	Scanner scanner = new Scanner(fs);
+	while(scanner.hasNext())
+	    json += scanner.nextLine();
+	scanner.close();
+ 
+	//System.out.println(json);
+	// Cr�ation d'un objet JSON
+	JSONObject objet = new JSONObject(json);
+ 
+	// Affichage � l'�cran
+	JSONArray tableau = objet.getJSONArray("users");
+	boolean validate=false;
+	int k =0;
+	while(!validate && k<tableau.length()){
+	    JSONObject element = tableau.getJSONObject(k);
+	    if(element.getString("login").equals(log) && element.getString("password").equals(mdp)){
+	    	validate=true;
+	    	message="<p>Connexion réussie, "+ element.getString("login") +" vous allez être redirigé vers votre portail.</p>";
+	    	int type = element.getInt("type");
+	    	if (type == 0) {
+	    		message+="<meta http-equiv=\"refresh\" content=\"3; url=http://localhost:8080/admin.html\">";	
+	    	} else if (type == 1) {
+	    		message+="<meta http-equiv=\"refresh\" content=\"3; url=http://localhost:8080/user.html\">";
+	    	}
+	    	
+	    }
+	    k++;
+	}
 	if(!validate) message="Mauvais couple login/password";
 	// Envoi de la r�ponse selon la validit�
-	output.println(message);
-	
-	
+	output.println(message);	
 	
 	// Fermeture des flux et des sockets
 	try {

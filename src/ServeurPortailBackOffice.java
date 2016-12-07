@@ -23,6 +23,7 @@ public class ServeurPortailBackOffice {
         serveur.createContext("/authentication.html", new LoginHandler());
         serveur.createContext("/index.html", new IndexHandler());
         serveur.createContext("/admin.html", new AdminHandler());
+        serveur.createContext("/user.html", new UserHandler());
         serveur.setExecutor(null);
         serveur.start();
         
