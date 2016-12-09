@@ -6,8 +6,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.Socket;
 import java.net.URI;
+import java.net.UnknownHostException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,6 +19,8 @@ import org.json.JSONObject;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
+import utilisateurs.ServeurTCP;
 
 public class SubmitHandler implements HttpHandler {
 
@@ -42,11 +48,11 @@ public class SubmitHandler implements HttpHandler {
         
         String reponse = query + "<br>";
         //1-group_1=A&1-group_2=A&1-group_3=A
-        /*JSONObject j = new JSONObject();
+        JSONObject j = new JSONObject();
         JSONArray a = new JSONArray();
         String sondage = "def";
         String[] parts = query.split("&");
-        for (int i = 0 ; i < parts.length ; i++) {
+        for (int i = 0 ; i < parts.length - 1 ; i++) {
         	JSONObject y = new JSONObject();
         	String[] p2 = parts[i].split("=");
         	sondage = p2[0].split("-")[0];
@@ -58,11 +64,35 @@ public class SubmitHandler implements HttpHandler {
         j.put("s"+sondage, a);
         String fichier = "reponses/sondage"+sondage+".json";
 
-        reponse += j.toString();*/
-        
-        /*BufferedWriter out = new BufferedWriter(new FileWriter(fichier));
+        reponse += j.toString();       
+        BufferedWriter out = new BufferedWriter(new FileWriter(fichier));
         out.write(j.toString());
-        out.close();*/
+        out.close();
+        
+        //DISCUSSION POUR UPDATE L'USER---------------------------------------------------------------------
+        Socket socket = null;
+    	try {
+    	    socket = new Socket("localhost", ServeurTCP.portEcoute);
+    	} catch(UnknownHostException e) {
+    	    System.err.println("Erreur sur l'hôte : " + e);
+    	    System.exit(-1);
+    	} catch(IOException e) {
+    	    System.err.println("Création de la socket impossible (apres le submit) : " + e);
+    	    System.exit(-1);
+    	}
+     
+    	// Association d'un flux d'entr�e et de sortie
+    	BufferedReader input = null;
+    	PrintWriter output = null;
+    	try {
+    	    input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    	    output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+    	} catch(IOException e) {
+    	    System.err.println("Association des flux impossible : " + e);
+    	    System.exit(-1);
+    	}    	
+    	// Envoi du couple login password
+    	output.println("1_"+j.toString());
      // Envoi de l'entête Http
         try {
             Headers h = t.getResponseHeaders();

@@ -54,7 +54,7 @@ class LoginHandler implements HttpHandler {
     	    System.err.println("Erreur sur l'hôte : " + e);
     	    System.exit(-1);
     	} catch(IOException e) {
-    	    System.err.println("Cr�ation de la socket impossible : " + e);
+    	    System.err.println("Cr�ation de la socket impossible (loginhandler) : " + e);
     	    System.exit(-1);
     	}
      
@@ -70,7 +70,7 @@ class LoginHandler implements HttpHandler {
     	}
      
     	// Envoi du couple login password
-    	output.println(query);
+    	output.println("0_"+query);
      
     	// Recupération de la réponse du serveur TCP
     	String reponseTCP ="";

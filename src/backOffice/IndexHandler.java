@@ -11,7 +11,7 @@ public class IndexHandler implements HttpHandler {
 	public void handle(HttpExchange t) {
         String reponse = "<html>"
   +"<head>"
-   + "<title>Formulaire de connexion au portail back office (Http)</title>"
+   + "<title>Formulaire de connexion au portail back office (Http)</title>"  
   +"</head>"
   + "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>"
   +"<body>"
@@ -23,7 +23,8 @@ public class IndexHandler implements HttpHandler {
       +"<button>Connexion</button>"
       +"</form>"
   +"</body>"
-+"</html>";    
++"</html>";   
+        
         
         // Envoi de l'en-tête Http
         try {

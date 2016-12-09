@@ -4,6 +4,8 @@ import java.io.OutputStreamWriter;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.ServerSocket;
@@ -11,6 +13,11 @@ import java.net.Socket;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class ServeurTCP {
 
@@ -23,25 +30,28 @@ public class ServeurTCP {
 	    socketServeur = new ServerSocket(portEcoute);
 	    System.out.println("Serveur TCP lancé");
 	} catch(IOException e) {
-	    System.err.println("Création de la socket impossible : " + e);
+	    System.err.println("Création de la socket impossible (coté serveur): " + e);
 	    System.exit(-1);
 	}
 
 	// Attente d'une connexion du LoginHandler
-	Socket socketClient = null;
+	while(true) {
+	Socket socketConnexion = null;
+	
 	try {
-	    socketClient = socketServeur.accept();
+	    socketConnexion = socketServeur.accept();
 	} catch(IOException e) {
 	    System.err.println("Erreur lors de l'attente d'une connexion : " + e);
 	    System.exit(-1);
 	}
 
 	// Association d'un flux d'entrée et de sortie
-	BufferedReader input = null;
-	PrintWriter output = null;
+	BufferedReader inputConnexion = null;
+	PrintWriter outputConnexion = null;
+	
 	try {
-	    input = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
-	    output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream())), true);
+	    inputConnexion = new BufferedReader(new InputStreamReader(socketConnexion.getInputStream()));
+	    outputConnexion = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socketConnexion.getOutputStream())), true);
 	} catch(IOException e) {
 	    System.err.println("Association des flux impossible : " + e);
 	    System.exit(-1);
@@ -50,33 +60,58 @@ public class ServeurTCP {
 	// Lecture du couple login mdp
 	String message = "";
 	try {
-	    message = input.readLine();
+	    message = inputConnexion.readLine();
 	} catch(IOException e) {
 	    System.err.println("Erreur lors de la lecture : " + e);
 	    System.exit(-1);
 	}
 	//------------------------------------------------------------------------------------------
+	if (message.split("_")[0].equals("0")) {
+		//Décomposition de la chaine pour obtenir le couple login mdp
+		String part1=message.split("&")[0];
+		String part2=message.split("&")[1];
+		String log=part1.split("=")[1];
+		String mdp=part2.split("=")[1];
+			
+		String reponse = Utilisateur.authentification(log, mdp);
+		// Envoi de la réponse selon la validité
+		outputConnexion.println(reponse);
+	} else {
+		ArrayList<Utilisateur> users = new ArrayList<>();
+		FileInputStream fs = null;
+		try {
+		    fs = new FileInputStream("utilisateurs.json");
+		} catch(FileNotFoundException e) {
+		    System.err.println("Fichier '" + "utilisateurs.json" + "' introuvable");
+		    System.exit(-1);
+		}
+	 
+		// Récupération de la chaîne JSON depuis le fichier
+		String json = new String();
+		Scanner scanner = new Scanner(fs);
+		while(scanner.hasNext())
+		    json += scanner.nextLine();
+		scanner.close();
+		
+		JSONObject objet = new JSONObject(json);		
+		
+		JSONArray tableau = objet.getJSONArray("utilisateurs");
+		
+		
+	}
+
 	
-	//Décomposition de la chaine pour obtenir le couple login mdp
-	String part1=message.split("&")[0];
-	String part2=message.split("&")[1];
-	String log=part1.split("=")[1];
-	String mdp=part2.split("=")[1];
-	
-	
-	String reponse = Utilisateur.authentification(log, mdp);
-	// Envoi de la réponse selon la validité
-	output.println(reponse);	
 	
 	// Fermeture des flux et des sockets
-	try {
-	    input.close();
-	    output.close();
-	    socketClient.close();
+	/*try {
+	    inputConnexion.close();
+	    outputConnexion.close();
+	    socketConnexion.close();
 	    socketServeur.close();
 	} catch(IOException e) {
 	    System.err.println("Erreur lors de la fermeture des flux et des sockets : " + e);
 	    System.exit(-1);
+	}*/
 	}
 	
     }
