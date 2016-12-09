@@ -7,12 +7,13 @@ import java.rmi.registry.LocateRegistry;
 
 public class ServeurRMIUtilisateurs {
 	public static void main(String[] args) {
-    	/*try {
+    	
+		try {
             LocateRegistry.createRegistry(1099);
   		} catch(RemoteException e) {
   		    System.err.println("Erreur lors de la recuperation du registry : " + e);
               System.exit(-1);
-          }*/
+        }
 		try {
 		    GestionnaireDistant g = new GestionnaireDistant();
 		    Naming.rebind("utilisateurs", g);

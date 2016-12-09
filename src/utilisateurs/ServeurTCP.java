@@ -72,8 +72,28 @@ public class ServeurTCP {
 		String part2=message.split("&")[1];
 		String log=part1.split("=")[1];
 		String mdp=part2.split("=")[1];
-			
-		String reponse = Utilisateur.authentification(log, mdp);
+					
+		IGestionnaireDistant g = null;
+
+		try {
+		    g = (IGestionnaireDistant)Naming.lookup("rmi://localhost/utilisateurs");
+		} catch(NotBoundException e) {
+		    System.err.println("Pas possible d'accéder à l'objet distant : " + e);
+		    System.exit(-1);
+		} catch(MalformedURLException e) {
+		    System.err.println("URL mal forme : " + e);
+		    System.exit(-1);
+		} catch(RemoteException e) {
+		    System.err.println("Pas possible d'accéder à l'objet distant : " + e);
+		    System.exit(-1);
+		}
+		String reponse = "def";
+		try {
+			reponse = g.authentification(log, mdp);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// Envoi de la réponse selon la validité
 		outputConnexion.println(reponse);
 	} else {
@@ -97,11 +117,7 @@ public class ServeurTCP {
 		
 		JSONArray tableau = objet.getJSONArray("utilisateurs");
 		
-		
 	}
-
-	
-	
 	// Fermeture des flux et des sockets
 	/*try {
 	    inputConnexion.close();

@@ -11,12 +11,14 @@ public class Lancement {
 
 	public static void main(String[] args) {	
 		ServeurPortailBackOffice.main(args);
+		ServeurRMIUtilisateurs.main(args);
 		try {
 			ServeurRMI.main(args);			
 		} catch (RemoteException | JSONException e) {
 			System.out.println("Problème RMI");
 			e.printStackTrace();
 		}
+		
 		ServeurTCP.main(args);
 		
 	}

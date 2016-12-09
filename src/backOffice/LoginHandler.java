@@ -81,9 +81,6 @@ class LoginHandler implements HttpHandler {
     	    System.exit(-1);
     	}
     	reponse+="<p>"+reponseTCP+"</p>";
-        
-    	
-    	
     	// Fermeture des flux et de la socket
     	try {
     	    input.close();

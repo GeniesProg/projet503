@@ -21,12 +21,12 @@ public class ServeurRMI {
 
     public static void main(String[] args) throws RemoteException, JSONException {
     
-    	try {
+    	/*try {
           LocateRegistry.createRegistry(1099);
 		} catch(RemoteException e) {
 		    System.err.println("Erreur lors de la recuperation du registry : " + e);
             System.exit(-1);
-        }
+        }*/
     	
     	//Récupération des données JSON
     	String nomFichier = "sondages.json";

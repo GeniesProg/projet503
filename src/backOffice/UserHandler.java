@@ -59,7 +59,6 @@ public class UserHandler implements HttpHandler {
 			+"<p>La page de l'ami " + nom +"</p>";
 		//reponse += query;
 		IArraySondage so = null;
-
 		// Récupération du sondage distant
 		try {
 		    so = (IArraySondage)Naming.lookup("rmi://localhost/sondages");
@@ -73,6 +72,8 @@ public class UserHandler implements HttpHandler {
 		    System.err.println("Pas possible d'accéder à l'objet distant (remote) : " + e);
 		    System.exit(-1);
 		}
+		
+		
 		
 		ArrayList<ISondage> sondages = null;
 		try {

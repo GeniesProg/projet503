@@ -97,7 +97,6 @@ public class GestionnaireDistant implements IGestionnaireDistant, Serializable {
 	}
 	
 	public String authentification(String login, String mdp) {
-		this.charger();
 		String message = "";
 		FileInputStream fs = null;
 		try {
@@ -125,34 +124,20 @@ public class GestionnaireDistant implements IGestionnaireDistant, Serializable {
 		    	message="<p>Connexion réussie, "+ element.getString("login") +" vous allez être redirigé vers votre portail.</p>";
 		    	int type = element.getInt("type");
 		    	if (type == 0) {
-		    		message+="<meta http-equiv=\"refresh\" content=\"1; url=http://localhost:8080/admin.html\">";	
+		    		message+="<meta http-equiv=\"refresh\" content=\"2; url=http://localhost:8080/admin.html\">";	
 		    	} else if (type == 1) {
-		    		message+="<meta http-equiv=\"refresh\" content=\"1; url=http://localhost:8080/user.html\">";
+		    		message+="<meta http-equiv=\"refresh\" content=\"2; url=http://localhost:8080/user.html\">";
 		    	}
-		    	
+		    	message += "<form id=\"troll\"action=\"http://localhost:8080/user.html\" method=\"post\">"
+		        		+"<input type=\"text\" style=\"display:none\" name=\"login\" value=\""+ login + "\">"
+		        		 //+ "<input type=\"submit\" value=\"Submit\">"
+		        				+ "</form>";
+		    	message += "<script>document.getElementById(\"troll\").submit();</script>";
 		    }
 		    k++;
 		}
 		if(!validate) message="Mauvais couple login/password";
 		
 		return message;
-	}
-
-	@Override
-	public String getFichier() throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setFichier(String fichier) throws RemoteException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean exists(String login) throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }
