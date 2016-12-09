@@ -1,68 +1,69 @@
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-
-import rmi.IArraySondage;
-import rmi.ISondage;
-
-import com.sun.net.httpserver.Headers;
+package backOffice;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-public class SondageHandler implements HttpHandler{
+import com.sun.net.httpserver.Headers;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 
+public class SubmitHandler implements HttpHandler {
+
+	@Override
 	public void handle(HttpExchange t) throws IOException {
-		
-		String reponse = "<p>coucou y aura des sondages ici bientot</p>";
-		
 		URI requestedUri = t.getRequestURI();
         String query = requestedUri.getRawQuery();
 
-        // Utilisation d'un flux pour lire les donn�es du message Http
+        // Utilisation d'un flux pour lire les données du message Http
         BufferedReader br = null;
         try {
             br = new BufferedReader(new InputStreamReader(t.getRequestBody(),"utf-8"));
         } catch(UnsupportedEncodingException e) {
-            System.err.println("Erreur lors de la r�cup�ration du flux " + e);
+            System.err.println("Erreur lors de la récupération du flux " + e);
             System.exit(-1);
         }
 	
-        // R�cup�ration des donn�es en POST
+        // Récupération des données en POST
         try {
             query = br.readLine();
         } catch(IOException e) {
             System.err.println("Erreur lors de la lecture d'une ligne " + e);
             System.exit(-1);
         }
-        String titre = query.split("=")[0];
-        String num = query.split("=")[1];
-        reponse += "<p>Vous avez choisi le sondage numéro "+ num +", "+titre+"</p>";
         
-        ISondage s = null ;
-		try {
-		    s = (ISondage)Naming.lookup("rmi://localhost/sondage"+num);
-		} catch(NotBoundException e) {
-		    System.err.println("Pas possible d'accéder à l'objet distant (not bound): " + e);
-		    System.exit(-1);
-		} catch(MalformedURLException e) {
-		    System.err.println("URL mal forme : " + e);
-		    System.exit(-1);
-		} catch(RemoteException e) {
-		    System.err.println("Pas possible d'accéder à l'objet distant (remote) : " + e);
-		    System.exit(-1);
-		}
-		
-		reponse += "<p>" + s.affichage() + "</p>";
-		// Envoi de l'en-tête Http
+        String reponse = query + "<br>";
+        //1-group_1=A&1-group_2=A&1-group_3=A
+        /*JSONObject j = new JSONObject();
+        JSONArray a = new JSONArray();
+        String sondage = "def";
+        String[] parts = query.split("&");
+        for (int i = 0 ; i < parts.length ; i++) {
+        	JSONObject y = new JSONObject();
+        	String[] p2 = parts[i].split("=");
+        	sondage = p2[0].split("-")[0];
+        	String question = p2[0].split("_")[1];
+        	String rep = p2[1];
+        	y.put(question, rep);
+        	a.put(y);        	
+        }
+        j.put("s"+sondage, a);
+        String fichier = "reponses/sondage"+sondage+".json";
+
+        reponse += j.toString();*/
+        
+        /*BufferedWriter out = new BufferedWriter(new FileWriter(fichier));
+        out.write(j.toString());
+        out.close();*/
+     // Envoi de l'entête Http
         try {
             Headers h = t.getResponseHeaders();
             h.set("Content-Type", "text/html; charset=utf-8");

@@ -1,15 +1,14 @@
+package backOffice;
 import java.io.IOException;
 import com.sun.net.httpserver.HttpServer;
 
-import java.net.InetSocketAddress;
+import rmi.ServeurRMI;
 
-/**
- * Classe correspondant à un serveur Http simple.
- * Le serveur �coute sur le port 8080 sur le contexte 'authentication.html'.
- * Le r�sultat est une simple page qui affiche les donn�es envoy�es en POST et en GET
- * @author Cyril Rabat
- * @version 2015/06/25
- */
+import java.net.InetSocketAddress;
+import java.rmi.RemoteException;
+
+import org.json.JSONException;
+
 public class ServeurPortailBackOffice {
 
     public static void main(String[] args) {	
@@ -17,7 +16,7 @@ public class ServeurPortailBackOffice {
         try {
             serveur = HttpServer.create(new InetSocketAddress(8080), 0);
         } catch(IOException e) {
-            System.err.println("Erreur lors de la cr�ation du serveur " + e);
+            System.err.println("Erreur lors de la création du serveur " + e);
             System.exit(-1);
         }
 
@@ -26,10 +25,10 @@ public class ServeurPortailBackOffice {
         serveur.createContext("/admin.html", new AdminHandler());
         serveur.createContext("/user.html", new UserHandler());
         serveur.createContext("/sondage.html", new SondageHandler());
+        serveur.createContext("/submit.html", new SubmitHandler());
         serveur.setExecutor(null);
         serveur.start();
         
-	System.out.println("Serveur d�marr�. Pressez CRTL+C pour arr�ter.");
+	System.out.println("Serveur portail b-o démarré.");	
     }
-
 }

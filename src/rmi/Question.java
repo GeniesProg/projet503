@@ -5,11 +5,17 @@ public class Question {
 	private int numero;
 	private String intitule;
 	private ArrayList<Reponse> reponses;
+	private int numSondage;
 	
-	public Question(int numero, String intitule) {
+	public Question(int numero, String intitule, int numSondage) {
 		this.numero = numero;
 		this.intitule = intitule;
 		this.reponses = null;
+		this.numSondage = numSondage;
+	}
+	
+	public int getNumSondage() {
+		return this.numSondage;
 	}
 	
 	public void setReponses(ArrayList<Reponse> reponses) {
@@ -19,9 +25,15 @@ public class Question {
 	@Override 
 	public String toString() {
 		String res = this.numero + ":" + this.intitule;
+		res += "<fieldset id=\""+this.numSondage + "-group_" + this.numero + "\">";
 		for (int i = 0 ; i < this.reponses.size() ; i++) {
-			res+= "<li>"+this.reponses.get(i)+"</li>";
+			res+= this.reponses.get(i);
 		}
+		res += "</fieldset>";
 		return res;
+	}
+
+	public int getNumero() {
+		return numero;
 	}
 }

@@ -1,3 +1,4 @@
+package backOffice;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -6,9 +7,14 @@ import rmi.IArraySondage;
 import rmi.ISondage;
 
 import com.sun.net.httpserver.Headers;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -17,6 +23,28 @@ import java.util.ArrayList;
 public class UserHandler implements HttpHandler {
 
 	public void handle(HttpExchange t) throws IOException {
+		
+		URI requestedUri = t.getRequestURI();
+        String query = requestedUri.getRawQuery();
+
+        // Utilisation d'un flux pour lire les données du message Http
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(t.getRequestBody(),"utf-8"));
+        } catch(UnsupportedEncodingException e) {
+            System.err.println("Erreur lors de la récupération du flux " + e);
+            System.exit(-1);
+        }
+	
+        // Récupération des données en POST
+        try {
+            query = br.readLine();
+        } catch(IOException e) {
+            System.err.println("Erreur lors de la lecture d'une ligne " + e);
+            System.exit(-1);
+        }
+        
+        //String nom = query.split("=")[1];
 		String reponse = 
 		"<html>"
 		  +"<head>"
@@ -26,10 +54,10 @@ public class UserHandler implements HttpHandler {
 		    +"</script>"
 		  +"</head>";
 		
-		
+		String nom = query.split("=")[1];
 		reponse += "<body>"
-			+"<p>Page utilisateur</p>";
-		
+			+"<p>La page de l'ami " + nom +"</p>";
+		//reponse += query;
 		IArraySondage so = null;
 
 		// Récupération du sondage distant
@@ -59,6 +87,7 @@ public class UserHandler implements HttpHandler {
 			try {				
 				test += "<form action=\"http://localhost:8080/sondage.html\" method=\"post\">"
 				  +"<button type=\"submit\" name=\""+sondages.get(j).getTitre()+"\" value=\""+sondages.get(j).getId()+"\" class=\"btn-link\">"+sondages.get(j).getTitre()+"</button>"
+				  + "<input type=\"hidden\" name=\"login\" value=\""+ nom +"\">"
 				+"</form>";
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block

@@ -36,10 +36,11 @@ public class Sondage extends UnicastRemoteObject implements ISondage {
     }
     
     public String affichage() throws RemoteException {
-    	String res = "<ul>" + this.id + ":" + this.titre;
+    	String res = "<form action=\"http://localhost:8080/submit.html\" method=\"post\" name=\""+ this.id + "\"><ul>" + this.id + ":" + this.titre;
     	for (int i = 0; i < this.quesAndRep.size();i++) {
     		res+= "<ul>"+quesAndRep.get(i)+"</ul>";
     	}
+    	res+="<button type=\"submit\" value=\"Submit\">Submit</button>";
     	res+="</ul>";
     	return res;
     }

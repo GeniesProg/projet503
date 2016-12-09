@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import rmi.ArraySondage;
+import utilisateurs.GestionnaireDistant;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -50,16 +51,17 @@ public class ServeurRMI {
     	
     	for(int i = 0; i < tableau.length(); i++) {
     	    JSONObject sondage = tableau.getJSONObject(i);
+    	    int numSondage = sondage.getInt("id");
     	    JSONArray questions = sondage.getJSONArray("questions");
     	    ArrayList<Question> tabQuestions = new ArrayList<>();
     	    for (int j = 0; j < questions.length() ; j++) {
     	    	JSONObject question = questions.getJSONObject(j);
-    	    	Question q = new Question(question.getInt("numero"), question.getString("intitule"));
+    	    	Question q = new Question(question.getInt("numero"), question.getString("intitule"), numSondage);
     	    	JSONArray reponses = question.getJSONArray("reponses");
     	    	ArrayList<Reponse> tabReponses = new ArrayList<>();
     	    	for (int k = 0; k < reponses.length(); k++){
     	    		JSONObject reponse = reponses.getJSONObject(k);
-    	    		Reponse r = new Reponse(reponse.getString("lettre"), reponse.getString("libelle"));
+    	    		Reponse r = new Reponse(reponse.getString("lettre"), reponse.getString("libelle"), q.getNumero(), numSondage);
     	    		tabReponses.add(r);
     	    	}
     	    	q.setReponses(tabReponses);
@@ -90,5 +92,8 @@ public class ServeurRMI {
 		    System.exit(-1);
 		}
     }
+    	
+	
+    System.out.println("Serveur RMI lancé, sondages créés");	
     }
 }

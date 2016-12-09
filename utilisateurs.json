@@ -1,18 +1,18 @@
 {
-	"users":[
+	"utilisateurs":[
 		{
 		"login":"admin",
-		"password":"admin",
+		"mdp":"admin",
 		"type":0
 		}, 
 		{
 		"login":"user1",
-		"password":"user1",
+		"mdp":"user1",
 		"type":1
 		},
 		{
 		"login":"user2",
-		"password":"user2",
+		"mdp":"user2",
 		"type":1
 		}
 	]
