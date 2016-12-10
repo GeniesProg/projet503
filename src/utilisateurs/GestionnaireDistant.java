@@ -15,8 +15,8 @@ import org.json.JSONObject;
 public class GestionnaireDistant implements IGestionnaireDistant, Serializable {
 	private String fichier;
 	private String fichierDonnees;
-	public ArrayList<Utilisateur> utilisateurs ;
-	public ArrayList<Donnee> donnees;
+	private ArrayList<Utilisateur> utilisateurs ;
+	private ArrayList<Donnee> donnees;
 	private int nbUsers;
 	
 	public GestionnaireDistant() throws RemoteException {
@@ -24,6 +24,7 @@ public class GestionnaireDistant implements IGestionnaireDistant, Serializable {
 		this.fichierDonnees = "rep.json";
 		this.utilisateurs = new ArrayList<Utilisateur>();
 		this.donnees = new ArrayList<Donnee>();		
+		this.chargerDonnees();
 	}
 	
 	public void ajouter(String login, String mdp, int type){
@@ -246,7 +247,6 @@ public class GestionnaireDistant implements IGestionnaireDistant, Serializable {
 		} catch(IOException e) {
 		    System.err.println("Erreur lors de l'écriture dans le fichier : " + e);
 		    System.exit(-1);
-		}
-		
+		}		
 	}
 }

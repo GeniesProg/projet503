@@ -1,0 +1,41 @@
+{
+"compte": [
+
+{"sondage":1, 
+ "questions":[
+ 	{"numQ":1, 
+ 	 "reps":[
+ 	 	{"lettre":"A","nb":0},
+ 	 	{"lettre":"B","nb":0},
+ 	 	{"lettre":"C","nb":0}
+ 	 ]
+ 	},
+ 	{"numQ":2, 
+ 	 "reps":[
+ 	 	{"lettre":"A","nb":0},
+ 	 	{"lettre":"B","nb":0},
+ 	 	{"lettre":"C","nb":0}
+ 	 ]
+ 	}
+ ]
+},
+{"sondage":1, 
+ "questions":[
+ 	{"numQ":1, 
+ 	 "reps":[
+ 	 	{"lettre":"A","nb":0},
+ 	 	{"lettre":"B","nb":0},
+ 	 	{"lettre":"C","nb":0}
+ 	 ]
+ 	},
+ 	{"numQ":2, 
+ 	 "reps":[
+ 	 	{"lettre":"A","nb":0},
+ 	 	{"lettre":"B","nb":0},
+ 	 	{"lettre":"C","nb":0}
+ 	 ]
+ 	}
+ ]
+}
+]
+}

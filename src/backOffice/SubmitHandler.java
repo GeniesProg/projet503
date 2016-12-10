@@ -9,9 +9,13 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URI;
 import java.net.UnknownHostException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,6 +24,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+import rmi.ISondage;
 import utilisateurs.ServeurTCP;
 
 public class SubmitHandler implements HttpHandler {
@@ -45,8 +50,8 @@ public class SubmitHandler implements HttpHandler {
             System.err.println("Erreur lors de la lecture d'une ligne " + e);
             System.exit(-1);
         }
-        
-        String reponse = query + "<br>";
+        String reponse = "";
+        //reponse += query + "<br>";
         //1-group_1=A&1-group_2=A&1-group_3=A
         JSONObject j = new JSONObject();
         JSONArray a = new JSONArray();
@@ -66,7 +71,38 @@ public class SubmitHandler implements HttpHandler {
         j.put("sondage", sondage);
         String fichier = "reponses/sondage"+sondage+".json";
 
-        reponse += j.toString();       
+        //reponse += j.toString();   
+
+        ISondage s = null ;
+		try {
+		    s = (ISondage)Naming.lookup("rmi://localhost/sondage"+sondage);
+	        
+		} catch(NotBoundException e) {
+		    System.err.println("Pas possible d'accéder à l'objet distant (not bound): " + e);
+		    System.exit(-1);
+		} catch(MalformedURLException e) {
+		    System.err.println("URL mal forme : " + e);
+		    System.exit(-1);
+		} catch(RemoteException e) {
+		    System.err.println("Pas possible d'accéder à l'objet distant (remote) : " + e);
+		    System.exit(-1);
+		}
+		for (int i = 0 ; i < s.getcompta().length ; i++) {
+			for (int k = 0 ; k < s.getcompta()[i].length ; k++ ) {
+				System.out.print(s.getcompta()[i][k]+ " ");
+			}
+			System.out.println(" ");
+		}
+		s.updateCompta(j.toString());
+		System.out.println("CONNARD");
+		System.out.println(s.affichageTotal());
+		for (int i = 0 ; i < s.getcompta().length ; i++) {
+			for (int k = 0 ; k < s.getcompta()[i].length ; k++ ) {
+				System.out.print(s.getcompta()[i][k]+ " ");
+			}
+			System.out.println(" ");
+		}
+		reponse += s.affichageTotal();
         BufferedWriter out = new BufferedWriter(new FileWriter(fichier));
         out.write(j.toString());
         out.close();

@@ -18,6 +18,10 @@ public class Question {
 		return this.numSondage;
 	}
 	
+	public int nbReponses() {
+		return this.reponses.size();
+	}
+	
 	public void setReponses(ArrayList<Reponse> reponses) {
 		this.reponses = new ArrayList<>(reponses);
 	}
