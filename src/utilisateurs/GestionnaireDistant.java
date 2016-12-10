@@ -13,13 +13,24 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class GestionnaireDistant implements IGestionnaireDistant, Serializable {
-	private String fichier = "utilisateurs.json";
-	private ArrayList<Utilisateur> utilisateurs = new ArrayList<>();	
+	private String fichier;
+	private String fichierDonnees;
+	public ArrayList<Utilisateur> utilisateurs ;
+	public ArrayList<Donnee> donnees;
+	private int nbUsers;
+	
+	public GestionnaireDistant() throws RemoteException {
+		this.fichier = "utilisateurs.json";
+		this.fichierDonnees = "rep.json";
+		this.utilisateurs = new ArrayList<Utilisateur>();
+		this.donnees = new ArrayList<Donnee>();		
+	}
 	
 	public void ajouter(String login, String mdp, int type){
 		utilisateurs.add(new Utilisateur(login, mdp, type));
-		sauvegarder();
+		this.sauvegarder();
 	}
+	
 	
 	public void supprimer(String login){
 		for (int i = 0 ; i < utilisateurs.size() ; i++) {
@@ -27,7 +38,7 @@ public class GestionnaireDistant implements IGestionnaireDistant, Serializable {
 				utilisateurs.remove(i);
 			}
 		}
-		sauvegarder();
+		this.sauvegarder();
 	}
 	
 	public void sauvegarder() {
@@ -94,6 +105,7 @@ public class GestionnaireDistant implements IGestionnaireDistant, Serializable {
 		    
 		}
 		utilisateurs = nouveau ;
+		nbUsers = utilisateurs.size();
 	}
 	
 	public String authentification(String login, String mdp) {
@@ -139,5 +151,102 @@ public class GestionnaireDistant implements IGestionnaireDistant, Serializable {
 		if(!validate) message="Mauvais couple login/password";
 		
 		return message;
+	}
+	@Override
+	public int getNbUsers() throws RemoteException {
+		return this.utilisateurs.size();
+	}
+	
+	@Override
+	public int getNbDonnees() throws RemoteException {
+		return this.donnees.size();
+	}
+
+	@Override
+	public ArrayList<Utilisateur> getUtilisateurs() throws RemoteException {
+		return utilisateurs;
+	}
+
+
+	@Override
+	public void ajouterDonnee(String login, int sondage, String[] reponses) throws RemoteException {
+		this.donnees.add(new Donnee(login, sondage, reponses));
+		this.sauvegarderDonnees();
+	}
+
+
+	@Override
+	public void chargerDonnees() {
+		FileInputStream fs = null;
+		try {
+		    fs = new FileInputStream(this.fichierDonnees);
+		} catch(FileNotFoundException e) {
+		    System.err.println("Fichier '" + this.fichierDonnees + "' introuvable");
+		    System.exit(-1);
+		}
+	 
+		// Récupération de la chaîne JSON depuis le fichier
+		String json = new String();
+		Scanner scanner = new Scanner(fs);
+		while(scanner.hasNext())
+		    json += scanner.nextLine();
+		scanner.close();
+	 
+		// Création d'un objet JSON
+		JSONObject objet = new JSONObject(json);		
+		JSONArray tableau = objet.getJSONArray("reponses");
+		
+		ArrayList<Donnee> nouveau = new ArrayList<>();
+		for (int i = 0; i< tableau.length(); i++) {
+			JSONObject element = tableau.getJSONObject(i);
+			
+			JSONArray liste = element.getJSONArray("liste");
+			String[] r = new String[liste.length()];
+			for (int j = 0; j < liste.length(); j++) {
+				JSONObject o = liste.getJSONObject(j);				
+				r[j] = o.getString(String.valueOf(j+1)); 
+			}
+			Donnee d = new Donnee(element.getString("login"),
+					element.getInt("sondage"), r);
+			nouveau.add(d);
+		}
+		this.donnees = nouveau;
+	}
+
+	public void sauvegarderDonnees() {
+		JSONObject j = new JSONObject();		
+		JSONArray a = new JSONArray();
+		for (Donnee d: this.donnees) {
+			JSONObject donnjson = new JSONObject();
+			donnjson.put("login", d.getLogin());
+			donnjson.put("sondage", d.getSondage());
+			JSONArray liste = new JSONArray();
+			for (int i = 0; i < d.getReponses().length; i++) {
+				JSONObject o = new JSONObject();
+				o.put(String.valueOf(i+1), d.getReponses()[i]);
+				liste.put(o);
+			}
+			donnjson.put("liste", liste);
+			a.put(donnjson);
+		}
+		j.put("reponses", a);
+		
+		FileWriter fs = null ; 
+		
+		try {
+		    fs = new FileWriter(this.fichierDonnees);
+		} catch(IOException e) {
+		    System.err.println("Erreur lors de l'ouverture du fichier " + this.fichierDonnees);
+		    System.err.println(e);
+		    System.exit(-1);
+		}
+		try {
+		    j.write(fs);
+		    fs.flush();
+		} catch(IOException e) {
+		    System.err.println("Erreur lors de l'écriture dans le fichier : " + e);
+		    System.exit(-1);
+		}
+		
 	}
 }

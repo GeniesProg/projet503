@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ServeurTCP {
@@ -66,6 +67,19 @@ public class ServeurTCP {
 	    System.exit(-1);
 	}
 	//------------------------------------------------------------------------------------------
+	IGestionnaireDistant g = null;
+	try {
+	    g = (IGestionnaireDistant)Naming.lookup("rmi://localhost/utilisateurs");
+	} catch(NotBoundException e) {
+	    System.err.println("Pas possible d'accéder à l'objet distant : " + e);
+	    System.exit(-1);
+	} catch(MalformedURLException e) {
+	    System.err.println("URL mal forme : " + e);
+	    System.exit(-1);
+	} catch(RemoteException e) {
+	    System.err.println("Pas possible d'accéder à l'objet distant : " + e);
+	    System.exit(-1);
+	}
 	if (message.split("_")[0].equals("0")) {
 		//Décomposition de la chaine pour obtenir le couple login mdp
 		String part1=message.split("&")[0];
@@ -73,20 +87,6 @@ public class ServeurTCP {
 		String log=part1.split("=")[1];
 		String mdp=part2.split("=")[1];
 					
-		IGestionnaireDistant g = null;
-
-		try {
-		    g = (IGestionnaireDistant)Naming.lookup("rmi://localhost/utilisateurs");
-		} catch(NotBoundException e) {
-		    System.err.println("Pas possible d'accéder à l'objet distant : " + e);
-		    System.exit(-1);
-		} catch(MalformedURLException e) {
-		    System.err.println("URL mal forme : " + e);
-		    System.exit(-1);
-		} catch(RemoteException e) {
-		    System.err.println("Pas possible d'accéder à l'objet distant : " + e);
-		    System.exit(-1);
-		}
 		String reponse = "def";
 		try {
 			reponse = g.authentification(log, mdp);
@@ -97,26 +97,29 @@ public class ServeurTCP {
 		// Envoi de la réponse selon la validité
 		outputConnexion.println(reponse);
 	} else {
-		ArrayList<Utilisateur> users = new ArrayList<>();
-		FileInputStream fs = null;
-		try {
-		    fs = new FileInputStream("utilisateurs.json");
-		} catch(FileNotFoundException e) {
-		    System.err.println("Fichier '" + "utilisateurs.json" + "' introuvable");
-		    System.exit(-1);
+		System.out.println(message);
+		String rep = message.split("_")[1];
+
+		JSONObject object = new JSONObject(rep);
+		JSONArray a = object.getJSONArray("liste");
+		String []r = new String[a.length()];
+		for (int i = 0; i< a.length() ; i++) {
+			JSONObject o = a.getJSONObject(i);
+			r[i] = o.getString(String.valueOf(i+1));
 		}
-	 
-		// Récupération de la chaîne JSON depuis le fichier
-		String json = new String();
-		Scanner scanner = new Scanner(fs);
-		while(scanner.hasNext())
-		    json += scanner.nextLine();
-		scanner.close();
 		
-		JSONObject objet = new JSONObject(json);		
-		
-		JSONArray tableau = objet.getJSONArray("utilisateurs");
-		
+		try {
+			g.ajouterDonnee(object.getString("login"), object.getInt("sondage"), r);
+		} catch (RemoteException | JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			System.out.println(g.getNbDonnees());
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	// Fermeture des flux et des sockets
 	/*try {

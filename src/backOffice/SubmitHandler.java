@@ -61,7 +61,9 @@ public class SubmitHandler implements HttpHandler {
         	y.put(question, rep);
         	a.put(y);        	
         }
-        j.put("s"+sondage, a);
+        j.put("liste", a);
+        j.put("login", parts[parts.length-1].split("=")[1]);
+        j.put("sondage", sondage);
         String fichier = "reponses/sondage"+sondage+".json";
 
         reponse += j.toString();       

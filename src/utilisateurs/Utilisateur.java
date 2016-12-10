@@ -2,6 +2,7 @@ package utilisateurs;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.json.JSONArray;
@@ -13,6 +14,7 @@ public class Utilisateur {
 	private String login;
 	private String password;
 	private int type;
+	private ArrayList<String> reponses;
 	
 	public Utilisateur(String login, String password, int type) {
 		this.login = login;
