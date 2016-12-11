@@ -24,6 +24,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+import rmi.IArraySondage;
 import rmi.ISondage;
 import utilisateurs.ServeurTCP;
 
@@ -73,9 +74,9 @@ public class SubmitHandler implements HttpHandler {
 
         //reponse += j.toString();   
 
-        ISondage s = null ;
+        IArraySondage gest = null ;
 		try {
-		    s = (ISondage)Naming.lookup("rmi://localhost/sondage"+sondage);
+			gest = (IArraySondage)Naming.lookup("rmi://localhost/sondages");
 	        
 		} catch(NotBoundException e) {
 		    System.err.println("Pas possible d'accéder à l'objet distant (not bound): " + e);
@@ -87,22 +88,9 @@ public class SubmitHandler implements HttpHandler {
 		    System.err.println("Pas possible d'accéder à l'objet distant (remote) : " + e);
 		    System.exit(-1);
 		}
-		for (int i = 0 ; i < s.getcompta().length ; i++) {
-			for (int k = 0 ; k < s.getcompta()[i].length ; k++ ) {
-				System.out.print(s.getcompta()[i][k]+ " ");
-			}
-			System.out.println(" ");
-		}
-		s.updateCompta(j.toString());
-		System.out.println("CONNARD");
-		System.out.println(s.affichageTotal());
-		for (int i = 0 ; i < s.getcompta().length ; i++) {
-			for (int k = 0 ; k < s.getcompta()[i].length ; k++ ) {
-				System.out.print(s.getcompta()[i][k]+ " ");
-			}
-			System.out.println(" ");
-		}
-		reponse += s.affichageTotal();
+
+		gest.updateCompta(j.toString());		
+		reponse += gest.affichageTotal(Integer.parseInt(sondage));
         BufferedWriter out = new BufferedWriter(new FileWriter(fichier));
         out.write(j.toString());
         out.close();

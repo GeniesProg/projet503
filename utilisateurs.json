@@ -3,10 +3,8 @@
 		{
 		"login":"admin",
 		"mdp":"admin",
-		"type":0,
-		"reponses": [{"s1":[{"1":"A"},{"2":"A"},{"3":"A"}]},
-					{"s2":[{"1":"A"},{"2":"A"},{"3":"A"}]}]
-		}, 
+		"type":0
+		},
 		{
 		"login":"user1",
 		"mdp":"user1",
@@ -15,6 +13,11 @@
 		{
 		"login":"user2",
 		"mdp":"user2",
+		"type":1
+		},
+		{
+		"login":"user3",
+		"mdp":"user3",
 		"type":1
 		}
 	]
