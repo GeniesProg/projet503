@@ -1,7 +1,10 @@
 package rmi;
 import java.rmi.server.UnicastRemoteObject;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -95,8 +98,40 @@ public class Sondage extends UnicastRemoteObject implements ISondage {
 
 	@Override
 	public int[][] getcompta() throws RemoteException {
-		// TODO Auto-generated method stub
 		return this.compta;
+	}
+
+	@Override
+	public boolean aRepondu(String login) throws RemoteException {
+		boolean trouve = false;
+		String fichier = "rep.json";
+		FileInputStream fs = null;
+		try {
+		    fs = new FileInputStream(fichier);
+		} catch(FileNotFoundException e) {
+		    System.err.println("Fichier '" + fichier + "' introuvable");
+		    System.exit(-1);
+		}
+	 
+		String json = new String();
+		Scanner scanner = new Scanner(fs);
+		while(scanner.hasNext())
+		    json += scanner.nextLine();
+		scanner.close();
+	 
+		JSONObject objet = new JSONObject(json);	
+		JSONArray a = objet.getJSONArray("reponses");
+		int i = 0;
+		while (!trouve && i < a.length()) {
+			JSONObject element = a.getJSONObject(i);
+			String user = element.getString("login");
+			int s = element.getInt("sondage");
+			if (user.equals(login) && s==this.id) {
+				trouve = true;
+			}
+			i++;
+		}
+		return trouve;
 	}
 	
 

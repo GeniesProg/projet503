@@ -171,6 +171,7 @@ public class GestionnaireDistant implements IGestionnaireDistant, Serializable {
 
 	@Override
 	public void ajouterDonnee(String login, int sondage, String[] reponses) throws RemoteException {
+		this.chargerDonnees();
 		this.donnees.add(new Donnee(login, sondage, reponses));
 		this.sauvegarderDonnees();
 	}

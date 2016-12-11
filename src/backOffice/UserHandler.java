@@ -85,15 +85,27 @@ public class UserHandler implements HttpHandler {
 
 		String test = "";
 		for (int j = 0 ; j < sondages.size(); j++) {
-			try {				
-				test += "<form action=\"http://localhost:8080/sondage.html\" method=\"post\">"
-				  +"<button type=\"submit\" name=\""+sondages.get(j).getTitre()+"\" value=\""+sondages.get(j).getId()+"\" class=\"btn-link\">"+sondages.get(j).getTitre()+"</button>"
-				  + "<input type=\"hidden\" name=\"login\" value=\""+ nom +"\">"
-				+"</form>";
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			ISondage s = sondages.get(j);
+			test += "<form action=\"http://localhost:8080/sondage.html\" method=\"post\">";
+			if (s.aRepondu(nom)) {
+				try {				
+					test+=
+					  "<button type=\"submit\" name=\""+s.getTitre()+"\" value=\""+s.getId()+"\" class=\"btn-link\" disabled>"+s.getTitre()+"</button>"
+					  + "Vous avez deja répondu à ce sondage!";
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				try {				
+					test+= "<button type=\"submit\" name=\""+s.getTitre()+"\" value=\""+s.getId()+"\" class=\"btn-link\">"+s.getTitre()+"</button>";
+
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			test+= "<input type=\"hidden\" name=\"login\" value=\""+ nom +"\"></form>";
 	    }
 		
 		reponse += test;
