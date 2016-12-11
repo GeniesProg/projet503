@@ -22,12 +22,15 @@ import java.net.UnknownHostException;
 class LoginHandler implements HttpHandler {
 
     public void handle(HttpExchange t) {
-        String reponse = "<h1>Authentification</h1>";
+        String reponse = "<body style=\"font-family: Georgia, Times, serif;padding:20px;width:400px;border:1px solid #172183;\">"
+        		+ "<p style=\"text-align:center;padding:5px;color:white;background:#172183;\">Authentification</p>";
         
         URI requestedUri = t.getRequestURI();
         String query = requestedUri.getRawQuery();
 
         reponse += query;
+        
+        reponse += "</body>";
         // Utilisation d'un flux pour lire les données du message Http
         BufferedReader br = null;
         try {

@@ -137,15 +137,16 @@ public class GestionnaireDistant implements IGestionnaireDistant, Serializable {
 		    	message="<p>Connexion réussie, "+ element.getString("login") +" vous allez être redirigé vers votre portail.</p>";
 		    	int type = element.getInt("type");
 		    	if (type == 0) {
-		    		message+="<meta http-equiv=\"refresh\" content=\"2; url=http://localhost:8080/admin.html\">";	
+			    	message += "<form id=\"troll\"action=\"http://localhost:8080/admin.html\" method=\"post\">"
+			        		+"<input type=\"text\" style=\"display:none\" name=\"login\" value=\""+ login + "\">"
+			        				+ "</form>";
 		    	} else if (type == 1) {
-		    		message+="<meta http-equiv=\"refresh\" content=\"2; url=http://localhost:8080/user.html\">";
+			    	message += "<form id=\"troll\"action=\"http://localhost:8080/user.html\" method=\"post\">"
+			        		+"<input type=\"text\" style=\"display:none\" name=\"login\" value=\""+ login + "\">"
+			        				+ "</form>";
 		    	}
-		    	message += "<form id=\"troll\"action=\"http://localhost:8080/user.html\" method=\"post\">"
-		        		+"<input type=\"text\" style=\"display:none\" name=\"login\" value=\""+ login + "\">"
-		        		 //+ "<input type=\"submit\" value=\"Submit\">"
-		        				+ "</form>";
-		    	message += "<script>document.getElementById(\"troll\").submit();</script>";
+
+		    	message += "<script>setTimeout(function(){document.getElementById(\"troll\").submit();}, 3000);</script>";
 		    }
 		    k++;
 		}

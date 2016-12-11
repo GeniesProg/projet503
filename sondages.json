@@ -1,6 +1,7 @@
 { "sondages": [
 				{"id": 1,
 				 "titre":"Premier sondage",
+				 "active":1,
 				 "questions": [
 				 			    {"numero":1,
 				                 "intitule":"Est-ce que vous aimez le pain?",
@@ -38,6 +39,7 @@
 				   
 				   {"id": 2,
 				 "titre":"La fac",
+				 "active":1,
 				 "questions": [
 				 			    {"numero":1,
 				                 "intitule":"Est-ce que vous aimez la fac?",

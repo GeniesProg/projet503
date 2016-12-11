@@ -15,10 +15,10 @@ public class AdminHandler implements HttpHandler {
 		   + "<title>Page admin</title>"
 		    +"<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>"
 		  +"</head>"
-		  +"<body>"
-			+"<p>Page admin</p>"
-		  +"</body>"
-		+"</html>";
+		  +"<body style=\"font-family: Georgia, Times, serif;padding:20px;width:400px;border:1px solid #172183;\">"
+			+"<p style=\"text-align:center;padding:5px;color:white;background:#172183;\">Bienvenue sur ta page l'admin!</p>";
+		
+		reponse +="</body></html>";
 		// Envoi de l'en-tête Http
         try {
             Headers h = t.getResponseHeaders();
