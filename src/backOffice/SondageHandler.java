@@ -50,7 +50,7 @@ public class SondageHandler implements HttpHandler{
         String nom = parts[1].split("=")[1];
         String titre = parts[0].split("=")[0];
         String num = parts[0].split("=")[1];
-        reponse += "<p style=\"text-align:center;padding:5px;color:white;background:#172183;\">>" + nom +", vous avez choisi le sondage numéro "+ num +", "+ titre + "</p>";
+        reponse += "<p style=\"text-align:center;padding:5px;color:white;background:#172183;\">" + nom +", vous avez choisi le sondage numéro "+ num +", "+ titre + "</p>";
         
         ISondage s = null ;
 		try {
