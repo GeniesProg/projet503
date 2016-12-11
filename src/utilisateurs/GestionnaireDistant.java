@@ -250,4 +250,36 @@ public class GestionnaireDistant implements IGestionnaireDistant, Serializable {
 		    System.exit(-1);
 		}		
 	}
+
+	@Override
+	public boolean aRepondu(String login, int sondage) throws RemoteException {
+		boolean trouve = false;
+		FileInputStream fs = null;
+		try {
+		    fs = new FileInputStream(this.fichierDonnees);
+		} catch(FileNotFoundException e) {
+		    System.err.println("Fichier '" + this.fichierDonnees + "' introuvable");
+		    System.exit(-1);
+		}
+	 
+		String json = new String();
+		Scanner scanner = new Scanner(fs);
+		while(scanner.hasNext())
+		    json += scanner.nextLine();
+		scanner.close();
+	 
+		JSONObject objet = new JSONObject(json);	
+		JSONArray a = objet.getJSONArray("reponses");
+		int i = 0;
+		while (!trouve && i < a.length()) {
+			JSONObject element = a.getJSONObject(i);
+			String user = element.getString("login");
+			int s = element.getInt("sondage");
+			if (user.equals(login) && s==sondage) {
+				trouve = true;
+			}
+			i++;
+		}
+		return trouve;
+	}
 }

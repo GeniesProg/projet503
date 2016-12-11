@@ -59,27 +59,6 @@ public class Sondage extends UnicastRemoteObject implements ISondage {
     }
 
 	@Override
-	public void updateCompta(String json) throws RemoteException {
-		JSONObject objet = new JSONObject(json);
-		JSONArray a = objet.getJSONArray("liste");
-		
-		for (int i = 0 ; i < a.length() ; i++) {
-			JSONObject element = a.getJSONObject(i);
-			System.out.println(element);
-			System.out.println(element.getString(String.valueOf(i+1)));
-			if (element.getString(String.valueOf(i+1)).equals("A")){
-				this.compta[i][0]++;
-			} else if (element.getString(String.valueOf(i+1)).equals("B")) {
-				//this.compta[i][1]++;
-			} else if (element.getString(String.valueOf(i+1)).equals("C")) {
-				//this.compta[i][2]++;
-			} else if (element.getString(String.valueOf(i+1)).equals("D")) {
-				//this.compta[i][3]++;
-			}
-		}
-	}
-
-	@Override
 	public String affichageTotal() throws RemoteException {
 		String s = "<p>Les résultats totaux: </p>";
 		for (int i = 0 ; i < this.compta.length ; i++) {
@@ -99,41 +78,6 @@ public class Sondage extends UnicastRemoteObject implements ISondage {
 	@Override
 	public int[][] getcompta() throws RemoteException {
 		return this.compta;
-	}
-
-	@Override
-	public boolean aRepondu(String login) throws RemoteException {
-		boolean trouve = false;
-		String fichier = "rep.json";
-		FileInputStream fs = null;
-		try {
-		    fs = new FileInputStream(fichier);
-		} catch(FileNotFoundException e) {
-		    System.err.println("Fichier '" + fichier + "' introuvable");
-		    System.exit(-1);
-		}
-	 
-		String json = new String();
-		Scanner scanner = new Scanner(fs);
-		while(scanner.hasNext())
-		    json += scanner.nextLine();
-		scanner.close();
-	 
-		JSONObject objet = new JSONObject(json);	
-		JSONArray a = objet.getJSONArray("reponses");
-		int i = 0;
-		while (!trouve && i < a.length()) {
-			JSONObject element = a.getJSONObject(i);
-			String user = element.getString("login");
-			int s = element.getInt("sondage");
-			if (user.equals(login) && s==this.id) {
-				trouve = true;
-			}
-			i++;
-		}
-		return trouve;
-	}
-	
-
+	}	
 	
 }

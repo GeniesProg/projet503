@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 
 import rmi.IArraySondage;
 import rmi.ISondage;
+import utilisateurs.IGestionnaireDistant;
 
 import com.sun.net.httpserver.Headers;
 
@@ -83,11 +84,25 @@ public class UserHandler implements HttpHandler {
 			e1.printStackTrace();
 		}
 
+		IGestionnaireDistant g = null;
+		try {
+		    g = (IGestionnaireDistant)Naming.lookup("rmi://localhost/utilisateurs");
+		} catch(NotBoundException e) {
+		    System.err.println("Pas possible d'accéder à l'objet distant : " + e);
+		    System.exit(-1);
+		} catch(MalformedURLException e) {
+		    System.err.println("URL mal forme : " + e);
+		    System.exit(-1);
+		} catch(RemoteException e) {
+		    System.err.println("Pas possible d'accéder à l'objet distant : " + e);
+		    System.exit(-1);
+		}
+		
 		String test = "";
 		for (int j = 0 ; j < sondages.size(); j++) {
 			ISondage s = sondages.get(j);
 			test += "<form action=\"http://localhost:8080/sondage.html\" method=\"post\">";
-			if (s.aRepondu(nom)) {
+			if (g.aRepondu(nom, s.getId())) {
 				try {				
 					test+=
 					  "<button type=\"submit\" name=\""+s.getTitre()+"\" value=\""+s.getId()+"\" class=\"btn-link\" disabled>"+s.getTitre()+"</button>"
