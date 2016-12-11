@@ -23,7 +23,8 @@ public class SondageHandler implements HttpHandler{
 
 	public void handle(HttpExchange t) throws IOException {
 		
-		String reponse = "<p>coucou y aura des sondages ici bientot</p>";
+		String reponse = "<body style=\"font-family: Georgia, Times, serif;padding:20px;width:400px;border:1px solid #172183;\">";
+				//+ "<p>coucou y aura des sondages ici bientot</p>";
 		
 		URI requestedUri = t.getRequestURI();
         String query = requestedUri.getRawQuery();
@@ -49,7 +50,7 @@ public class SondageHandler implements HttpHandler{
         String nom = parts[1].split("=")[1];
         String titre = parts[0].split("=")[0];
         String num = parts[0].split("=")[1];
-        reponse += "<p>" + nom +" ,Vous avez choisi le sondage numéro "+ num +", "+titre + "</p>";
+        reponse += "<p style=\"text-align:center;padding:5px;color:white;background:#172183;\">>" + nom +", vous avez choisi le sondage numéro "+ num +", "+ titre + "</p>";
         
         ISondage s = null ;
 		try {
@@ -66,7 +67,7 @@ public class SondageHandler implements HttpHandler{
 		}
 		
 		reponse += "<p>" + s.affichage();
-		reponse += "<input type=\"hidden\" name=\"login\" value=\""+ nom +"\">" + "</p>" + "</form>";
+		reponse += "<input type=\"hidden\" name=\"login\" value=\""+ nom +"\">" + "</p>" + "</form></body>";
 		// Envoi de l'en-tête Http
         try {
             Headers h = t.getResponseHeaders();

@@ -56,8 +56,8 @@ public class UserHandler implements HttpHandler {
 		  +"</head>";
 		
 		String nom = query.split("=")[1];
-		reponse += "<body>"
-			+"<p>La page de l'ami " + nom +"</p>";
+		reponse += "<body style=\"font-family: Georgia, Times, serif;padding:20px;width:400px;border:1px solid #172183;\">"
+			+"<p style=\"text-align:center;padding:5px;color:white;background:#172183;\">La page de l'ami " + nom +"</p>";
 		//reponse += query;
 		IArraySondage so = null;
 		// Récupération du sondage distant
