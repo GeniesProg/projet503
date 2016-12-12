@@ -211,6 +211,7 @@ public class GestionnaireSondages extends UnicastRemoteObject implements IGestio
 
 	@Override
 	public void chargerSondages() throws RemoteException {
+		System.out.println("je suis passé par charger");
 		FileInputStream fs = null;
     	try {
     	    fs = new FileInputStream(this.fichierSondages);
@@ -308,10 +309,18 @@ public class GestionnaireSondages extends UnicastRemoteObject implements IGestio
 	}
 
 	@Override
-	public void ajouterSondage(int n, String titre, ArrayList<Question> q, int active) throws RemoteException { 		
-		System.out.println("av " + this.objSondages.size());
-		this.objSondages.add(new Sondage(n, titre, q, active));
-		System.out.println("ap " + this.objSondages.size());
+	public void ajouterSondage(int nsondage, String titre, ArrayList<Question>questions, int i) throws RemoteException { 		
+		System.out.println("CONNARD MANIFESTE TOI PUTAIN");
+		Sondage s = new Sondage(nsondage, titre, questions, i);
+		try {
+			Naming.rebind("sondage"+s.getId(), s);
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		this.objSondages.add(s);	
+		this.sondages.add((ISondage)s);
+		//this.objSondages.add(s);		
 		this.sauvegarderSondages();
 		
 	}

@@ -1,7 +1,8 @@
 package rmi;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Question {
+public class Question implements Serializable{
 	private int numero;
 	private String intitule;
 	private ArrayList<Reponse> reponses;

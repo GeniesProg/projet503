@@ -73,8 +73,9 @@ public class UserHandler implements HttpHandler {
 		    System.err.println("Pas possible d'accéder à l'objet distant (remote) : " + e);
 		    System.exit(-1);
 		}
+		so.chargerSondages();
 		
-		
+		System.out.println(so);
 		
 		ArrayList<ISondage> sondages = null;
 		try {

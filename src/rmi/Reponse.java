@@ -1,5 +1,8 @@
 package rmi;
-public class Reponse {
+
+import java.io.Serializable;
+
+public class Reponse implements Serializable{
 	private String num;
 	private String texte;
 	private int numQuestion;

@@ -1,1 +1,89 @@
-{"sondages":[{"titre":"Premier sondage","questions":[{"numero":1,"intitule":"Est-ce que vous aimez le pain?","reponses":[{"libelle":"Oui","lettre":"A"},{"libelle":"Non","lettre":"B"},{"libelle":"ça dépend","lettre":"C"}]},{"numero":2,"intitule":"Quelle est la marque de votre voiture?","reponses":[{"libelle":"Citroën","lettre":"A"},{"libelle":"BMW","lettre":"B"},{"libelle":"Mercedes","lettre":"C"}]},{"numero":3,"intitule":"Où habitez vous?","reponses":[{"libelle":"dtc","lettre":"A"},{"libelle":"Reims","lettre":"B"}]}],"active":1,"id":1},{"titre":"La fac","questions":[{"numero":1,"intitule":"Est-ce que vous aimez la fac?","reponses":[{"libelle":"Oui","lettre":"A"},{"libelle":"Non","lettre":"B"},{"libelle":"ça dépend","lettre":"C"}]},{"numero":2,"intitule":"Combien d'heures passez vous à la fac par semaine","reponses":[{"libelle":"10-15","lettre":"A"},{"libelle":"15-20","lettre":"B"},{"libelle":"20-30","lettre":"C"},{"libelle":"30+","lettre":"D"}]},{"numero":3,"intitule":"Où habitez vous?","reponses":[{"libelle":"dtc","lettre":"A"},{"libelle":"Reims","lettre":"B"}]},{"numero":4,"intitule":"Pourquoi êtes vous à la fac?","reponses":[{"libelle":"La famille m'a obligé","lettre":"A"},{"libelle":"Parce que c'est génial","lettre":"B"}]}],"active":1,"id":2}]}
+{ "sondages": [
+				{"id": 1,
+				 "titre":"Premier sondage",
+				 "active":1,
+				 "questions": [
+				 			    {"numero":1,
+				                 "intitule":"Est-ce que vous aimez le pain?",
+				                 "reponses":[
+				                 				{"lettre":"A",
+				                 				"libelle":"Oui"},
+				                 				{"lettre":"B",
+				                 				"libelle":"Non"},
+				                 				{"lettre":"C",
+				                 				"libelle":"ça dépend"}				                 				
+				                 			]
+				                 },
+				                {"numero":2,
+				                 "intitule":"Quelle est la marque de votre voiture?",
+				                 "reponses":[
+				                 				{"lettre":"A",
+				                 				"libelle":"Citroën"},
+				                 				{"lettre":"B",
+				                 				"libelle":"BMW"},
+				                 				{"lettre":"C",
+				                 				"libelle":"Mercedes"}				                 				
+				                 			]
+				                 },
+				                {"numero":3,
+				                 "intitule":"Où habitez vous?",
+				                 "reponses":[
+				                 				{"lettre":"A",
+				                 				"libelle":"dtc"},
+				                 				{"lettre":"B",
+				                 				"libelle":"Reims"}			                 				
+				                 			]
+				                 }				                 
+				              ]
+				   },
+				   
+				   {"id": 2,
+				 "titre":"La fac",
+				 "active":1,
+				 "questions": [
+				 			    {"numero":1,
+				                 "intitule":"Est-ce que vous aimez la fac?",
+				                 "reponses":[
+				                 				{"lettre":"A",
+				                 				"libelle":"Oui"},
+				                 				{"lettre":"B",
+				                 				"libelle":"Non"},
+				                 				{"lettre":"C",
+				                 				"libelle":"ça dépend"}				                 				
+				                 			]
+				                 },
+				                {"numero":2,
+				                 "intitule":"Combien d'heures passez vous à la fac par semaine",
+				                 "reponses":[
+				                 				{"lettre":"A",
+				                 				"libelle":"10-15"},
+				                 				{"lettre":"B",
+				                 				"libelle":"15-20"},
+				                 				{"lettre":"C",
+				                 				"libelle":"20-30"},
+				                 				{"lettre":"D",
+				                 				"libelle":"30+"}				                 				
+				                 			]
+				                 },
+				                {"numero":3,
+				                 "intitule":"Où habitez vous?",
+				                 "reponses":[
+				                 				{"lettre":"A",
+				                 				"libelle":"dtc"},
+				                 				{"lettre":"B",
+				                 				"libelle":"Reims"}			                 				
+				                 			]
+				                 },
+				                 {"numero":4,
+				                 "intitule":"Pourquoi êtes vous à la fac?",
+				                 "reponses":[
+				                 				{"lettre":"A",
+				                 				"libelle":"La famille m'a obligé"},
+				                 				{"lettre":"B",
+				                 				"libelle":"Parce que c'est génial"}			                 				
+				                 			]
+				                 }					                 
+				              ]
+				   }
+				 ]
+} 
