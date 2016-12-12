@@ -89,8 +89,10 @@ public class SubmitHandler implements HttpHandler {
 		    System.exit(-1);
 		}
 
-		gest.updateCompta(j.toString());		
+		gest.updateCompta(j.toString());
+		reponse += "<body style=\"font-family: Georgia, Times, serif;padding:20px;width:400px;border:1px solid #172183;\">";
 		reponse += gest.affichageTotal(Integer.parseInt(sondage));
+		reponse += "</body>";
         BufferedWriter out = new BufferedWriter(new FileWriter(fichier));
         out.write(j.toString());
         out.close();

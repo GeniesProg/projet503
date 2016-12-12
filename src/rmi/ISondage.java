@@ -11,6 +11,5 @@ public interface ISondage extends Remote {
     public String getTitre() throws RemoteException;
     public int[][]  getcompta() throws RemoteException;
     public String affichage() throws RemoteException;
-    public String affichageTotal() throws RemoteException;    
 
 }

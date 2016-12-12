@@ -169,8 +169,8 @@ public class ArraySondage extends UnicastRemoteObject implements IArraySondage  
 	}
 
 	public String affichageTotal(int sondage) throws RemoteException {
-		String s = "<body style=\"font-family: Georgia, Times, serif;padding:20px;width:400px;border:1px solid #172183;\">"
-				+ "<p style=\"text-align:center;padding:5px;color:white;background:#172183;\">Les résultats totaux: </p>";
+		this.chargerCompta();
+		String s =  "<div><p style=\"text-align:center;padding:5px;color:white;background:#172183;\">Les résultats totaux du sondage" + " " + sondage +": </p>";
 		for (int recherche = 0 ; recherche < this.compta.size() ; recherche++) {
 			if (this.compta.get(recherche).getSondage() == sondage) {
 				Compta c = this.compta.get(recherche);
@@ -187,7 +187,7 @@ public class ArraySondage extends UnicastRemoteObject implements IArraySondage  
 				}
 			}
 		}
-		s+="</body>";
+		s+="</div>";
 		return s;
 	}
 }

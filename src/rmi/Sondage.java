@@ -59,23 +59,6 @@ public class Sondage extends UnicastRemoteObject implements ISondage {
     }
 
 	@Override
-	public String affichageTotal() throws RemoteException {
-		String s = "<p>Les résultats totaux: </p>";
-		for (int i = 0 ; i < this.compta.length ; i++) {
-			s += "Question " + (i+1) + ": <br>"; 
-			for (int j = 0 ; j < this.compta[i].length; j++) {
-				s+= "     ";
-				if (j == 0) s+= "A";
-				else if (j == 1) s+= "B";
-				else if (j == 2) s+= "C";
-				else if (j == 3) s+= "D";
-				s+= ": " + this.compta[i][j] + "<br>";
-			}
-		}
-		return s;
-	}
-
-	@Override
 	public int[][] getcompta() throws RemoteException {
 		return this.compta;
 	}	

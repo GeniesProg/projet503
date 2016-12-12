@@ -26,6 +26,9 @@ public class ServeurPortailBackOffice {
         serveur.createContext("/user.html", new UserHandler());
         serveur.createContext("/sondage.html", new SondageHandler());
         serveur.createContext("/submit.html", new SubmitHandler());
+        serveur.createContext("/resultats.html", new ResultatsTotaux());
+        serveur.createContext("/activation.html", new ActivationHandler());
+        serveur.createContext("/gestionActivation.html", new GestionActivation());
         serveur.setExecutor(null);
         serveur.start();
         

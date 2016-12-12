@@ -105,7 +105,7 @@ public class UserHandler implements HttpHandler {
 			if (g.aRepondu(nom, s.getId())) {
 				try {				
 					test+=
-					  "<button type=\"submit\" name=\""+s.getTitre()+"\" value=\""+s.getId()+"\" class=\"btn-link\" disabled>"+s.getTitre()+"</button>"
+					  "<button style=\"cursor:not-allowed\" type=\"submit\" name=\""+s.getTitre()+"\" value=\""+s.getId()+"\" class=\"btn-link\" disabled>"+s.getTitre()+"</button>"
 					  + "Vous avez deja répondu à ce sondage!";
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
