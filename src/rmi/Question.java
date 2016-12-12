@@ -40,4 +40,24 @@ public class Question {
 	public int getNumero() {
 		return numero;
 	}
+
+	public String getIntitule() {
+		return intitule;
+	}
+
+	public ArrayList<Reponse> getReponses() {
+		return reponses;
+	}
+
+	public void setNumero(int numero) {
+		this.numero = numero;
+	}
+
+	public void setIntitule(String intitule) {
+		this.intitule = intitule;
+	}
+
+	public void setNumSondage(int numSondage) {
+		this.numSondage = numSondage;
+	}
 }

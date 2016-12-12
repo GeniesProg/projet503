@@ -3,7 +3,7 @@ package backOffice;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import rmi.IArraySondage;
+import rmi.IGestionnaireSondages;
 import rmi.ISondage;
 import utilisateurs.IGestionnaireDistant;
 
@@ -59,10 +59,10 @@ public class UserHandler implements HttpHandler {
 		reponse += "<body style=\"font-family: Georgia, Times, serif;padding:20px;width:400px;border:1px solid #172183;\">"
 			+"<p style=\"text-align:center;padding:5px;color:white;background:#172183;\">La page de l'ami " + nom +"</p>";
 		//reponse += query;
-		IArraySondage so = null;
+		IGestionnaireSondages so = null;
 		// Récupération du sondage distant
 		try {
-		    so = (IArraySondage)Naming.lookup("rmi://localhost/sondages");
+		    so = (IGestionnaireSondages)Naming.lookup("rmi://localhost/sondages");
 		} catch(NotBoundException e) {
 		    System.err.println("Pas possible d'accéder à l'objet distant (not bound): " + e);
 		    System.exit(-1);
@@ -101,26 +101,28 @@ public class UserHandler implements HttpHandler {
 		String test = "";
 		for (int j = 0 ; j < sondages.size(); j++) {
 			ISondage s = sondages.get(j);
-			test += "<form action=\"http://localhost:8080/sondage.html\" method=\"post\">";
-			if (g.aRepondu(nom, s.getId())) {
-				try {				
-					test+=
-					  "<button style=\"cursor:not-allowed\" type=\"submit\" name=\""+s.getTitre()+"\" value=\""+s.getId()+"\" class=\"btn-link\" disabled>"+s.getTitre()+"</button>"
-					  + "Vous avez deja répondu à ce sondage!";
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			if (so.estActive(s)) {							
+				test += "<form action=\"http://localhost:8080/sondage.html\" method=\"post\">";
+				if (g.aRepondu(nom, s.getId())) {
+					try {				
+						test+=
+						  "<button style=\"cursor:not-allowed\" type=\"submit\" name=\""+s.getTitre()+"\" value=\""+s.getId()+"\" class=\"btn-link\" disabled>"+s.getTitre()+"</button>"
+						  + "Vous avez deja répondu à ce sondage!";
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
+					try {				
+						test+= "<button type=\"submit\" name=\""+s.getTitre()+"\" value=\""+s.getId()+"\" class=\"btn-link\">"+s.getTitre()+"</button>";
+	
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			} else {
-				try {				
-					test+= "<button type=\"submit\" name=\""+s.getTitre()+"\" value=\""+s.getId()+"\" class=\"btn-link\">"+s.getTitre()+"</button>";
-
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				test+= "<input type=\"hidden\" name=\"login\" value=\""+ nom +"\"></form>";
 			}
-			test+= "<input type=\"hidden\" name=\"login\" value=\""+ nom +"\"></form>";
 	    }
 		
 		reponse += test;

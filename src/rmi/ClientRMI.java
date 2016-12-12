@@ -17,11 +17,11 @@ public class ClientRMI {
      * @param args inutilisé
      */
     public static void main(String[] args) {
-	IArraySondage so = null;
+	IGestionnaireSondages so = null;
 
 	// Récupération du sondage distant
 	try {
-	    so = (IArraySondage)Naming.lookup("rmi://localhost/sondages");
+	    so = (IGestionnaireSondages)Naming.lookup("rmi://localhost/sondages");
 	} catch(NotBoundException e) {
 	    System.err.println("Pas possible d'accéder à l'objet distant : " + e);
 	    System.exit(-1);

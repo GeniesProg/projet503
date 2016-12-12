@@ -3,6 +3,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -11,16 +13,20 @@ import java.util.Scanner;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class ArraySondage extends UnicastRemoteObject implements IArraySondage  {
+public class GestionnaireSondages extends UnicastRemoteObject implements IGestionnaireSondages  {
 
 	private ArrayList<ISondage> sondages;
 	private ArrayList<Compta> compta;
+	private ArrayList<Sondage> objSondages; 
 	private String fichierCompta;
+	private String fichierSondages;
 	
-    public ArraySondage(ArrayList<ISondage> sondages) throws RemoteException {
+    public GestionnaireSondages(ArrayList<ISondage> sondages) throws RemoteException {
     	this.sondages = new ArrayList<>(sondages);
     	this.compta = new ArrayList<>();
+    	this.objSondages = new ArrayList<>();
     	this.fichierCompta = "comptasond.json";
+    	this.fichierSondages = "sondages.json";
     }
 
 	public ArrayList<ISondage> getSondages() throws RemoteException {		
@@ -189,5 +195,160 @@ public class ArraySondage extends UnicastRemoteObject implements IArraySondage  
 		}
 		s+="</div>";
 		return s;
+	}
+
+	@Override
+	public void updateActivation(int sondage, int activation) throws RemoteException {
+		this.chargerSondages();
+		for (int i = 0 ; i < this.objSondages.size() ; i++ ) {
+			Sondage actuel = this.objSondages.get(i);
+			if (actuel.getId() == sondage) {
+				actuel.setActive(activation);
+			}
+		}
+		this.sauvegarderSondages();		
+	}
+
+	@Override
+	public void chargerSondages() throws RemoteException {
+		FileInputStream fs = null;
+    	try {
+    	    fs = new FileInputStream(this.fichierSondages);
+    	} catch(FileNotFoundException e) {
+    	    System.err.println("Fichier '" + this.fichierSondages + "' introuvable");
+    	    System.exit(-1);
+    	}
+    	
+    	String json = new String();
+    	Scanner scanner = new Scanner(fs);
+    	while(scanner.hasNext())
+    	    json += scanner.nextLine();
+    	scanner.close();
+    	
+    	JSONObject objet = new JSONObject(json);
+    	JSONArray tableau = objet.getJSONArray("sondages");
+    	ArrayList<Sondage> sondages = new ArrayList<Sondage>();
+
+    	for(int i = 0; i < tableau.length(); i++) {
+    	    JSONObject sondage = tableau.getJSONObject(i);
+    	    int numSondage = sondage.getInt("id");
+    	    int active = sondage.getInt("active");
+        	
+    	    JSONArray questions = sondage.getJSONArray("questions");
+    	    ArrayList<Question> tabQuestions = new ArrayList<>();
+    	    for (int j = 0; j < questions.length() ; j++) {
+    	    	JSONObject question = questions.getJSONObject(j);
+    	    	Question q = new Question(question.getInt("numero"), question.getString("intitule"), numSondage);
+    	    	JSONArray reponses = question.getJSONArray("reponses");
+    	    	ArrayList<Reponse> tabReponses = new ArrayList<>();
+    	    	for (int k = 0; k < reponses.length(); k++){
+    	    		JSONObject reponse = reponses.getJSONObject(k);
+    	    		Reponse r = new Reponse(reponse.getString("lettre"), reponse.getString("libelle"), q.getNumero(), numSondage);
+    	    		tabReponses.add(r);
+    	    	}
+    	    	q.setReponses(tabReponses);
+    	    	tabQuestions.add(q);
+    	    }
+    	    
+    	    Sondage s = new Sondage(sondage.getInt("id"), sondage.getString("titre"), tabQuestions, active);
+    	    
+    	    sondages.add(s);
+    	      	
+    	}
+    	
+    	this.objSondages = sondages;
+    	
+	}
+
+	@Override
+	public void sauvegarderSondages() throws RemoteException {
+		JSONObject main = new JSONObject();
+		JSONArray a = new JSONArray();
+		
+		for (Sondage s : this.objSondages) {
+			JSONObject objetSondage = new JSONObject();
+			objetSondage.put("id", s.getId());
+			objetSondage.put("titre", s.getTitre());
+			objetSondage.put("active", s.getActive());
+			JSONArray questions = new JSONArray();
+			for (Question q : s.getQuesAndRep()) {
+				JSONObject question = new JSONObject();
+				question.put("numero", q.getNumero());
+				question.put("intitule", q.getIntitule());
+				JSONArray reponses = new JSONArray();
+				for (Reponse r : q.getReponses()) {
+					JSONObject reponse = new JSONObject();
+					reponse.put("lettre", r.getNum());
+					reponse.put("libelle", r.getTexte());
+					reponses.put(reponse);
+				}
+				question.put("reponses", reponses);
+				questions.put(question);
+			}
+			objetSondage.put("questions", questions);
+			a.put(objetSondage);
+		}
+		main.put("sondages", a);
+		FileWriter fs = null ; 
+		
+		try {
+		    fs = new FileWriter(this.fichierSondages);
+		} catch(IOException e) {
+		    System.err.println("Erreur lors de l'ouverture du fichier " + this.fichierSondages);
+		    System.err.println(e);
+		    System.exit(-1);
+		}
+		try {
+		    main.write(fs);
+		    fs.flush();
+		} catch(IOException e) {
+		    System.err.println("Erreur lors de l'écriture dans le fichier : " + e);
+		    System.exit(-1);
+		}
+	}
+
+	@Override
+	public void ajouterSondage(int n, String titre, ArrayList<Question> q, int active) throws RemoteException { 		
+		System.out.println("av " + this.objSondages.size());
+		this.objSondages.add(new Sondage(n, titre, q, active));
+		System.out.println("ap " + this.objSondages.size());
+		this.sauvegarderSondages();
+		
+	}
+
+	@Override
+	public Compta createComtpaFromSondage(Sondage s) throws RemoteException {
+		int r [][] = new int[s.getQuesAndRep().size()][];
+		for (int i = 0 ; i < s.getQuesAndRep().size() ; i++) {
+			r[i] = new int[s.getQuesAndRep().get(i).getReponses().size()];
+		}
+		Compta c = new Compta(s.getId(), r);
+		return c;
+	}
+
+	@Override
+	public void ajouterCompta(Compta c) throws RemoteException {
+		System.out.println("hello");
+		this.chargerCompta();
+		this.compta.add(c);
+		this.sauvegarderCompta();
+		
+	}
+
+	@Override
+	public boolean estActive(ISondage s) throws RemoteException {
+		this.chargerSondages();
+		boolean b = false;
+		for (int i = 0 ; i < this.objSondages.size() ; i++) {
+			Sondage current = this.objSondages.get(i);
+			if (s.getId() == current.getId()) {
+				if (current.getActive() == 0) {
+					b = false;
+				} else {
+					b= true;
+				}
+			}
+		}
+		return b;
 	}
 }

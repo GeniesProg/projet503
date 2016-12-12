@@ -10,14 +10,13 @@ import java.net.URI;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import rmi.IGestionnaireSondages;
-
-public class GestionActivation implements HttpHandler {
+public class CreationHandler implements HttpHandler {
 
 	@Override
 	public void handle(HttpExchange t) throws IOException {
@@ -28,14 +27,11 @@ public class GestionActivation implements HttpHandler {
 				    +"<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>"
 				  +"</head>"
 				  +"<body style=\"font-family: Georgia, Times, serif;padding:20px;width:400px;border:1px solid #172183;\">"
-					+"<p style=\"text-align:center;padding:5px;color:white;background:#172183;\">Vos changements ont bien été pris en compte!</p>"
-					+ "<form action=\"http://localhost:8080/admin.html\">"
-					+ "<button style=\"border: none;color: #ffffff;display: block;margin: auto;background: #172183;padding: 5px 20px;cursor:pointer;\">Retour</button>"
-					+ "</form>";
-		URI requestedUri = t.getRequestURI();
-        String query = requestedUri.getRawQuery();
-
-        // Utilisation d'un flux pour lire les données du message Http
+				  + "<p style=\"text-align:center;padding:5px;color:white;background:#172183;\">Vous êtes dans l'interface de création de sondage, laissez le(s) dernier(s) champ(s) de réponses vide si vous ne voulez pas 4 réponses!</p>";
+		
+		 URI requestedUri = t.getRequestURI();
+	     String query = requestedUri.getRawQuery();
+	        
         BufferedReader br = null;
         try {
             br = new BufferedReader(new InputStreamReader(t.getRequestBody(),"utf-8"));
@@ -52,32 +48,21 @@ public class GestionActivation implements HttpHandler {
             System.exit(-1);
         }
         
-        IGestionnaireSondages array = null;
-		try {
-		    array = (IGestionnaireSondages)Naming.lookup("rmi://localhost/sondages");
-		} catch(NotBoundException e) {
-		    System.err.println("Pas possible d'accéder à l'objet distant : " + e);
-		    System.exit(-1);
-		} catch(MalformedURLException e) {
-		    System.err.println("URL mal forme : " + e);
-		    System.exit(-1);
-		} catch(RemoteException e) {
-		    System.err.println("Pas possible d'accéder à l'objet distant : " + e);
-		    System.exit(-1);
-		}		
+        int questions = Integer.parseInt(query.split("=")[1]);
         
-        String [] elements = query.split("&");
-        for (int i = 0 ; i < elements.length ; i++) {
-        	String[] curr = elements[i].split("=");
-        	String s = curr[0];
-        	int active = Integer.parseInt(curr[1]);
-        	int sondage = Integer.parseInt(s.substring(1, s.length()));
-        	array.updateActivation(sondage, active);
+        String form = "<form action=\"http://localhost:8080/gestionCreation.html\" method=\"post\">";
+        form += "Titre: <input type=\"text\" name=\"sondage\"><br>";
+        for (int i = 1 ; i <= questions ; i++) {
+        	form += "<p style=\"\">Q" + i + " <input style=\"width:75%;\" type=\"text\" name=\"Q" + i + "\"></p>";
+        	for (int j = 1 ; j <= 4; j++) {
+        		form += "<p style=\"margin-left:25px;width:75%;\">R" + j + "<input type=\"text\" name=\""+i + "_" + j + "\"></p>";
+        	}
         }
+        form += "<button style=\"border: none;color: #ffffff;background: #172183;padding: 5px 20px;cursor:pointer;\">Commencer la création</button>"
+        		 + "</form>";
 		
-		reponse +="</body></html>";
-		// Envoi de l'en-tête Http
-        try {
+		reponse += form + "</body></html>";
+		try {
             Headers h = t.getResponseHeaders();
             h.set("Content-Type", "text/html; charset=utf-8");
             t.sendResponseHeaders(200, 0);

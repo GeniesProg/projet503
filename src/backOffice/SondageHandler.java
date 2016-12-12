@@ -2,7 +2,7 @@ package backOffice;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import rmi.IArraySondage;
+import rmi.IGestionnaireSondages;
 import rmi.ISondage;
 
 import com.sun.net.httpserver.Headers;

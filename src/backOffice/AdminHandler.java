@@ -27,7 +27,15 @@ public class AdminHandler implements HttpHandler {
 			+ "<form action=\"http://localhost:8080/activation.html\">"
 			+ "<button style=\"border: none;color: #ffffff;display: block;margin: auto;background: #172183;padding: 5px 20px;cursor:pointer;\">Activer/Désactiver</button>"
 			+ "</form>"
-			+ "</li>";
+			+ "</li>"
+			+"<li>"
+			+ "<p>Choisissez le nombre de questions dans votre futur sondage</p>"
+			+ "<form action=\"http://localhost:8080/creation.html\" method=\"post\">"
+			+ "<input style=\"margin-right:20px;\" type=\"text\" name=\"nQuestions\">"
+			+ "<button style=\"border: none;color: #ffffff;background: #172183;padding: 5px 20px;cursor:pointer;\">Commencer la création</button>"
+			+ "</form>"
+			+ "</li>"
+			+ "</ul>";
 		
 		reponse +="</body></html>";
 		// Envoi de l'en-tête Http

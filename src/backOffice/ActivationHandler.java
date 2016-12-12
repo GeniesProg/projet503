@@ -12,7 +12,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import rmi.IArraySondage;
+import rmi.IGestionnaireSondages;
 import rmi.ISondage;
 
 public class ActivationHandler implements HttpHandler{
@@ -29,9 +29,9 @@ public class ActivationHandler implements HttpHandler{
 					+"<p style=\"text-align:center;padding:5px;color:white;background:#172183;\">Ici, vous pouvez activer et désactiver des sondages</p>";
 				
 		
-		IArraySondage array = null;
+		IGestionnaireSondages array = null;
 		try {
-		    array = (IArraySondage)Naming.lookup("rmi://localhost/sondages");
+		    array = (IGestionnaireSondages)Naming.lookup("rmi://localhost/sondages");
 		} catch(NotBoundException e) {
 		    System.err.println("Pas possible d'accéder à l'objet distant : " + e);
 		    System.exit(-1);

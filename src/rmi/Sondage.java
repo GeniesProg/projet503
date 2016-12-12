@@ -16,24 +16,14 @@ public class Sondage extends UnicastRemoteObject implements ISondage {
     private String titre;
     private ArrayList<Question> quesAndRep ;
     private int[][] compta;
-
-    /**
-     * Constructeur par défaut.
-     */
-    public Sondage() throws RemoteException {    	
-		this.id=idCount;
-		this.titre="defaut";
-		this.quesAndRep=null;
-		this.compta=null;
-		idCount++;
-    }
+    private int active;   
     
-    public Sondage(int id, String titre, ArrayList<Question> tab) throws RemoteException {
+    public Sondage(int id, String titre, ArrayList<Question> tab, int active) throws RemoteException {
     	this.titre = titre;
     	this.quesAndRep = new ArrayList<>(tab);
     	this.id = id;
     	this.compta = new int[tab.size()][];
-    	
+    	this.active = active;
     	for (int i = 0 ; i < tab.size() ; i++) {
     		this.compta[i] = new int[this.quesAndRep.get(i).nbReponses()];
     	}
@@ -61,6 +51,30 @@ public class Sondage extends UnicastRemoteObject implements ISondage {
 	@Override
 	public int[][] getcompta() throws RemoteException {
 		return this.compta;
+	}
+
+	public int getActive() {
+		return active;
+	}
+
+	public void setActive(int active) {
+		this.active = active;
+	}
+
+	public ArrayList<Question> getQuesAndRep() {
+		return quesAndRep;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setTitre(String titre) {
+		this.titre = titre;
+	}
+
+	public void setQuesAndRep(ArrayList<Question> quesAndRep) {
+		this.quesAndRep = quesAndRep;
 	}	
 	
 }

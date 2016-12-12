@@ -10,7 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import rmi.ArraySondage;
+import rmi.GestionnaireSondages;
 import utilisateurs.GestionnaireDistant;
 
 import java.io.FileInputStream;
@@ -52,6 +52,7 @@ public class ServeurRMI {
     	for(int i = 0; i < tableau.length(); i++) {
     	    JSONObject sondage = tableau.getJSONObject(i);
     	    int numSondage = sondage.getInt("id");
+    	    int active = sondage.getInt("active");
     	    JSONArray questions = sondage.getJSONArray("questions");
     	    ArrayList<Question> tabQuestions = new ArrayList<>();
     	    for (int j = 0; j < questions.length() ; j++) {
@@ -68,7 +69,7 @@ public class ServeurRMI {
     	    	tabQuestions.add(q);
     	    }
     	    
-    	    Sondage s = new Sondage(sondage.getInt("id"), sondage.getString("titre"), tabQuestions);
+    	    Sondage s = new Sondage(sondage.getInt("id"), sondage.getString("titre"), tabQuestions, active);
     	    try {
 				Naming.rebind("sondage"+s.getId(), s);
 			} catch (MalformedURLException e1) {
@@ -79,7 +80,7 @@ public class ServeurRMI {
     	      	
     	
 		try {	   
-			ArraySondage as = new ArraySondage(sondages);
+			GestionnaireSondages as = new GestionnaireSondages(sondages);
 			//Naming.rebind("sondages", sondages);
 			Naming.rebind("sondages", as);
 			

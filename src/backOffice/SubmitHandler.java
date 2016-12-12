@@ -24,7 +24,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import rmi.IArraySondage;
+import rmi.IGestionnaireSondages;
 import rmi.ISondage;
 import utilisateurs.ServeurTCP;
 
@@ -74,9 +74,9 @@ public class SubmitHandler implements HttpHandler {
 
         //reponse += j.toString();   
 
-        IArraySondage gest = null ;
+        IGestionnaireSondages gest = null ;
 		try {
-			gest = (IArraySondage)Naming.lookup("rmi://localhost/sondages");
+			gest = (IGestionnaireSondages)Naming.lookup("rmi://localhost/sondages");
 	        
 		} catch(NotBoundException e) {
 		    System.err.println("Pas possible d'accéder à l'objet distant (not bound): " + e);

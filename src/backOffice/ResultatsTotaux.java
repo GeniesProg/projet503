@@ -12,7 +12,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import rmi.IArraySondage;
+import rmi.IGestionnaireSondages;
 import rmi.ISondage;
 
 public class ResultatsTotaux implements HttpHandler {
@@ -28,9 +28,9 @@ public class ResultatsTotaux implements HttpHandler {
 				  +"<body style=\"font-family: Georgia, Times, serif;padding:20px;width:400px;border:1px solid #172183;\">"
 					;
 		
-		IArraySondage array = null;
+		IGestionnaireSondages array = null;
 		try {
-		    array = (IArraySondage)Naming.lookup("rmi://localhost/sondages");
+		    array = (IGestionnaireSondages)Naming.lookup("rmi://localhost/sondages");
 		} catch(NotBoundException e) {
 		    System.err.println("Pas possible d'accéder à l'objet distant : " + e);
 		    System.exit(-1);

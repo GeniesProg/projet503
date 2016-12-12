@@ -1,0 +1,89 @@
+{ "sondages": [
+				{"id": 1,
+				 "titre":"Premier sondage",
+				 "active":1,
+				 "questions": [
+				 			    {"numero":1,
+				                 "intitule":"Est-ce que vous aimez le pain?",
+				                 "reponses":[
+				                 				{"lettre":"A",
+				                 				"libelle":"Oui"},
+				                 				{"lettre":"B",
+				                 				"libelle":"Non"},
+				                 				{"lettre":"C",
+				                 				"libelle":"ça dépend"}				                 				
+				                 			]
+				                 },
+				                {"numero":2,
+				                 "intitule":"Quelle est la marque de votre voiture?",
+				                 "reponses":[
+				                 				{"lettre":"A",
+				                 				"libelle":"Citroën"},
+				                 				{"lettre":"B",
+				                 				"libelle":"BMW"},
+				                 				{"lettre":"C",
+				                 				"libelle":"Mercedes"}				                 				
+				                 			]
+				                 },
+				                {"numero":3,
+				                 "intitule":"Où habitez vous?",
+				                 "reponses":[
+				                 				{"lettre":"A",
+				                 				"libelle":"dtc"},
+				                 				{"lettre":"B",
+				                 				"libelle":"Reims"}			                 				
+				                 			]
+				                 }				                 
+				              ]
+				   },
+				   
+				   {"id": 2,
+				 "titre":"La fac",
+				 "active":1,
+				 "questions": [
+				 			    {"numero":1,
+				                 "intitule":"Est-ce que vous aimez la fac?",
+				                 "reponses":[
+				                 				{"lettre":"A",
+				                 				"libelle":"Oui"},
+				                 				{"lettre":"B",
+				                 				"libelle":"Non"},
+				                 				{"lettre":"C",
+				                 				"libelle":"ça dépend"}				                 				
+				                 			]
+				                 },
+				                {"numero":2,
+				                 "intitule":"Combien d'heures passez vous à la fac par semaine",
+				                 "reponses":[
+				                 				{"lettre":"A",
+				                 				"libelle":"10-15"},
+				                 				{"lettre":"B",
+				                 				"libelle":"15-20"},
+				                 				{"lettre":"C",
+				                 				"libelle":"20-30"},
+				                 				{"lettre":"D",
+				                 				"libelle":"30+"}				                 				
+				                 			]
+				                 },
+				                {"numero":3,
+				                 "intitule":"Où habitez vous?",
+				                 "reponses":[
+				                 				{"lettre":"A",
+				                 				"libelle":"dtc"},
+				                 				{"lettre":"B",
+				                 				"libelle":"Reims"}			                 				
+				                 			]
+				                 },
+				                 {"numero":4,
+				                 "intitule":"Pourquoi êtes vous à la fac?",
+				                 "reponses":[
+				                 				{"lettre":"A",
+				                 				"libelle":"La famille m'a obligé"},
+				                 				{"lettre":"B",
+				                 				"libelle":"Parce que c'est génial"}			                 				
+				                 			]
+				                 }					                 
+				              ]
+				   }
+				 ]
+} 
