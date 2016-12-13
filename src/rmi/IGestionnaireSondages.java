@@ -19,4 +19,6 @@ public interface IGestionnaireSondages extends Remote{
 	public void sauvegarderSondages() throws RemoteException;
 	public void ajouterSondage(int nsondage, String titre, ArrayList<Question>questions, int i) throws RemoteException;
 	public boolean estActive(ISondage s) throws RemoteException;
+	
+	public String getCompta(int s) throws RemoteException;
 }

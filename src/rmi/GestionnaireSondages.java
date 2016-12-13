@@ -367,4 +367,33 @@ public class GestionnaireSondages extends UnicastRemoteObject implements IGestio
 		}
 		return b;
 	}
+
+	@Override
+	public String getCompta(int s) throws RemoteException {
+		this.chargerCompta();
+		FileInputStream fs = null;
+    	try {
+    	    fs = new FileInputStream(this.fichierCompta);
+    	} catch(FileNotFoundException e) {
+    	    System.err.println("Fichier '" + this.fichierCompta + "' introuvable");
+    	    System.exit(-1);
+    	}
+    	
+    	String json = new String();
+    	Scanner scanner = new Scanner(fs);
+    	while(scanner.hasNext())
+    	    json += scanner.nextLine();
+    	scanner.close();
+    	
+    	JSONObject objet = new JSONObject(json);
+    	JSONArray tableau = objet.getJSONArray("compte");
+    	
+    	for (int i = 0 ; i < tableau.length() ; i++) {
+    		JSONObject j = tableau.getJSONObject(i);
+    		if (j.getInt("sondage") == s) {
+    			return j.toString();
+    		}
+    	}
+		return "tg";
+	}
 }

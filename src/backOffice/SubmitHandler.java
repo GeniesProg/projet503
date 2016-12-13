@@ -1,18 +1,26 @@
 package backOffice;
 
 import java.io.BufferedReader;
+
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -27,6 +35,8 @@ import com.sun.net.httpserver.HttpHandler;
 import rmi.IGestionnaireSondages;
 import rmi.ISondage;
 import utilisateurs.ServeurTCP;
+
+import org.json.JSONObject;
 
 public class SubmitHandler implements HttpHandler {
 
@@ -71,7 +81,7 @@ public class SubmitHandler implements HttpHandler {
         j.put("login", parts[parts.length-1].split("=")[1]);
         j.put("sondage", sondage);
         String fichier = "reponses/sondage"+sondage+".json";
-
+        System.out.println(j);
         //reponse += j.toString();   
 
         IGestionnaireSondages gest = null ;
@@ -90,6 +100,13 @@ public class SubmitHandler implements HttpHandler {
 		}
 
 		gest.updateCompta(j.toString());
+		
+		String json = gest.getCompta(Integer.parseInt(sondage));
+		System.out.println("compta :" + json);
+		String json2 = json.replace("\"", "%");
+		System.out.println("test: " + json2);
+			
+		
 		reponse += "<body style=\"font-family: Georgia, Times, serif;padding:20px;width:400px;border:1px solid #172183;\">";
 		reponse += gest.affichageTotal(Integer.parseInt(sondage));
 		
@@ -101,6 +118,17 @@ public class SubmitHandler implements HttpHandler {
 		reponse += "<form action=\"http://localhost:8080/index.html\">"				
 				+ "<button style=\"border: none;color: #ffffff;display: block;margin: auto;background: #172183;padding: 5px 20px;cursor:pointer;\">Deconnexion</button>"				
 				+ "</form>";
+			
+		
+		reponse+= "<p>Redirection en cours vers l'histogramme...</p>";
+		
+		reponse += "<form id=\"test\" action=\"http://localhost/histogramme/affichageHisto.php\" method=\"post\">"
+				+ "<input type=\"hidden\" name=\"json\" value=\""+ json2 +"\">"
+				+ "<input type=\"hidden\" name=\"login\" value=\""+ parts[parts.length-1].split("=")[1] +"\">"
+				+ "</form>";
+		reponse += "<script>setTimeout(function(){document.getElementById(\"test\").submit();}, 3000);</script>";
+		
+		//reponse += "<img src=\"http://localhost/histogramme/generateur.php?json="+ json2 + "/>";
 		reponse += "</body>";
 		
         BufferedWriter out = new BufferedWriter(new FileWriter(fichier));
