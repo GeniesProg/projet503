@@ -55,6 +55,7 @@ public class UserHandler implements HttpHandler {
 		    +"</script>"
 		  +"</head>";
 		
+		System.out.println(query);
 		String nom = query.split("=")[1];
 		reponse += "<body style=\"font-family: Georgia, Times, serif;padding:20px;width:400px;border:1px solid #172183;\">"
 			+"<p style=\"text-align:center;padding:5px;color:white;background:#172183;\">La page de l'ami " + nom +"</p>";
@@ -107,15 +108,15 @@ public class UserHandler implements HttpHandler {
 				if (g.aRepondu(nom, s.getId())) {
 					try {				
 						test+=
-						  "<button style=\"cursor:not-allowed\" type=\"submit\" name=\""+s.getTitre()+"\" value=\""+s.getId()+"\" class=\"btn-link\" disabled>"+s.getTitre()+"</button>"
-						  + "Vous avez deja répondu à ce sondage!";
+								  "<button style=\"cursor:not-allowed\" type=\"submit\" name=\""+s.getTitre()+"\" value=\""+s.getId()+"\" disabled>"+s.getTitre()+"</button>"
+		+ "Vous avez deja répondu à ce sondage!";
 					} catch (RemoteException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				} else {
 					try {				
-						test+= "<button type=\"submit\" name=\""+s.getTitre()+"\" value=\""+s.getId()+"\" class=\"btn-link\">"+s.getTitre()+"</button>";
+						test+= "<button style=\"border: none;color: #ffffff;display: block;margin: auto;background: #172183;padding: 5px 20px;cursor:pointer;\" type=\"submit\" name=\""+s.getTitre()+"\" value=\""+s.getId()+"\">"+s.getTitre()+"</button>";
 	
 					} catch (RemoteException e) {
 						// TODO Auto-generated catch block
@@ -127,6 +128,10 @@ public class UserHandler implements HttpHandler {
 	    }
 		
 		reponse += test;
+		
+		reponse += "<hr/><form action=\"http://localhost:8080/index.html\">"
+				+ "<button style=\"border: none;color: #ffffff;display: block;margin: auto;background: #172183;padding: 5px 20px;cursor:pointer;\">Deconnexion</button>"
+				+ "</form>";
 		
 		reponse += "</body>"
 		+"</html>";

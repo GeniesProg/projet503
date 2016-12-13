@@ -146,7 +146,7 @@ public class GestionnaireDistant implements IGestionnaireDistant, Serializable {
 			        				+ "</form>";
 		    	}
 
-		    	message += "<script>setTimeout(function(){document.getElementById(\"troll\").submit();}, 3000);</script>";
+		    	message += "<script>setTimeout(function(){document.getElementById(\"troll\").submit();}, 2000);</script>";
 		    }
 		    k++;
 		}

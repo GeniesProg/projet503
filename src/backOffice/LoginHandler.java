@@ -27,8 +27,6 @@ class LoginHandler implements HttpHandler {
         
         URI requestedUri = t.getRequestURI();
         String query = requestedUri.getRawQuery();
-
-        reponse += query;
         
         reponse += "</body>";
         // Utilisation d'un flux pour lire les données du message Http

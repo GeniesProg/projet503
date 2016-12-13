@@ -24,7 +24,5 @@ public class Compta {
 
 	public void setRes(int[][] res) {
 		this.res = res;
-	}
-	
-	
+	}		
 }

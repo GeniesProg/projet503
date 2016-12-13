@@ -64,7 +64,12 @@ public class ActivationHandler implements HttpHandler{
 		}
 		form += "<button style=\"border: none;color: #ffffff;display: block;margin: auto;background: #172183;padding: 5px 20px;cursor:pointer;\">C'est parti!</button>"
 				+ "</form>";
-		reponse += form + "</body></html>";
+		
+		reponse += form;
+		reponse += "<hr><form action=\"http://localhost:8080/admin.html\">"
+				+ "<button style=\"border: none;color: #ffffff;display: block;margin: auto;background: #172183;padding: 5px 20px;cursor:pointer;\">Retour</button>"
+				+ "</form>";
+		reponse += "</body></html>";
 		try {
             Headers h = t.getResponseHeaders();
             h.set("Content-Type", "text/html; charset=utf-8");

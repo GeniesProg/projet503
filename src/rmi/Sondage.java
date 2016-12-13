@@ -43,7 +43,7 @@ public class Sondage extends UnicastRemoteObject implements ISondage {
     	for (int i = 0; i < this.quesAndRep.size();i++) {
     		res+= "<ul>"+quesAndRep.get(i)+"</ul>";
     	}
-    	res+="<button type=\"submit\" value=\"Submit\">Submit</button>";
+    	res+="<button style=\"border: none;color: #ffffff;display: block;margin: auto;background: #172183;padding: 5px 20px;cursor:pointer;\" type=\"submit\" value=\"Submit\">Submit</button>";
     	res+="</ul>";
     	return res;
     }
@@ -75,6 +75,6 @@ public class Sondage extends UnicastRemoteObject implements ISondage {
 
 	public void setQuesAndRep(ArrayList<Question> quesAndRep) {
 		this.quesAndRep = quesAndRep;
-	}	
+	}
 	
 }

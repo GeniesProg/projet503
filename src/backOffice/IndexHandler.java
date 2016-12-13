@@ -23,7 +23,7 @@ public class IndexHandler implements HttpHandler {
     + "<li style=\"padding:5px;\"><label >Login</label><input style=\"margin-left:72px;\" type=\"text\" name=\"login\"/></li>"
      + "<li style=\"padding:5px;\"><label>Password</label><input style=\"margin-left:45px;\" type=\"password\" name=\"password\"/></li>"
      + "</ol>"
-      +"</fieldset><fieldset><button style=\"border: none;color: #ffffff;display: block;margin: auto;background: #172183;padding: 5px 20px;\">Connexion</button></fieldset>"
+      +"</fieldset><fieldset><button style=\"border: none;color: #ffffff;display: block;margin: auto;background: #172183;padding: 5px 20px;cursor:pointer;\">Connexion</button></fieldset>"
       +"</form>"
   +"</body>"
 +"</html>";   

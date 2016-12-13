@@ -310,7 +310,9 @@ public class GestionnaireSondages extends UnicastRemoteObject implements IGestio
 
 	@Override
 	public void ajouterSondage(int nsondage, String titre, ArrayList<Question>questions, int i) throws RemoteException { 		
-		System.out.println("CONNARD MANIFESTE TOI PUTAIN");
+		//System.out.println("CONNARD MANIFESTE TOI PUTAIN");
+		this.chargerCompta();
+		
 		Sondage s = new Sondage(nsondage, titre, questions, i);
 		try {
 			Naming.rebind("sondage"+s.getId(), s);
@@ -318,9 +320,14 @@ public class GestionnaireSondages extends UnicastRemoteObject implements IGestio
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		Compta c = this.createComtpaFromSondage(s);
+		
 		this.objSondages.add(s);	
+		this.compta.add(c);		
 		this.sondages.add((ISondage)s);
-		//this.objSondages.add(s);		
+		
+		//this.objSondages.add(s);
+		this.sauvegarderCompta();
 		this.sauvegarderSondages();
 		
 	}

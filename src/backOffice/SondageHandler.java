@@ -68,6 +68,15 @@ public class SondageHandler implements HttpHandler{
 		
 		reponse += "<p>" + s.affichage();
 		reponse += "<input type=\"hidden\" name=\"login\" value=\""+ nom +"\">" + "</p>" + "</form></body>";
+		
+		reponse += "<hr><form action=\"http://localhost:8080/user.html\" method=\"post\">"
+				+ "<input type=\"hidden\" name=\"login\" value=\""+ nom +"\">"
+				+ "<button style=\"border: none;color: #ffffff;display: block;margin: auto;background: #172183;padding: 5px 20px;cursor:pointer;\">Retour</button>"				
+				+ "</form>";
+		
+		reponse += "<form action=\"http://localhost:8080/index.html\">"				
+				+ "<button style=\"border: none;color: #ffffff;display: block;margin: auto;background: #172183;padding: 5px 20px;cursor:pointer;\">Deconnexion</button>"				
+				+ "</form>";
 		// Envoi de l'en-tête Http
         try {
             Headers h = t.getResponseHeaders();

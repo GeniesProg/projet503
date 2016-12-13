@@ -37,6 +37,9 @@ public class AdminHandler implements HttpHandler {
 			+ "</li>"
 			+ "</ul>";
 		
+		reponse += "<hr/><form action=\"http://localhost:8080/index.html\">"
+				+ "<button style=\"border: none;color: #ffffff;display: block;margin: auto;background: #172183;padding: 5px 20px;cursor:pointer;\">Deconnexion</button>"
+				+ "</form>";
 		reponse +="</body></html>";
 		// Envoi de l'en-tête Http
         try {
