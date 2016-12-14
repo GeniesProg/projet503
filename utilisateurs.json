@@ -19,6 +19,21 @@
 		"login":"user3",
 		"mdp":"user3",
 		"type":1
+		},
+		{
+		"login":"user4",
+		"mdp":"user4",
+		"type":1
+		},
+		{
+		"login":"user5",
+		"mdp":"user5",
+		"type":1
+		},
+		{
+		"login":"user6",
+		"mdp":"user6",
+		"type":1
 		}
 	]
 }

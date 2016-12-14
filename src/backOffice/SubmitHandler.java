@@ -80,8 +80,8 @@ public class SubmitHandler implements HttpHandler {
         j.put("liste", a);
         j.put("login", parts[parts.length-1].split("=")[1]);
         j.put("sondage", sondage);
-        String fichier = "reponses/sondage"+sondage+".json";
-        System.out.println(j);
+        //String fichier = "reponses/sondage"+sondage+".json";
+        //System.out.println(j);
         //reponse += j.toString();   
 
         IGestionnaireSondages gest = null ;
@@ -102,9 +102,9 @@ public class SubmitHandler implements HttpHandler {
 		gest.updateCompta(j.toString());
 		
 		String json = gest.getCompta(Integer.parseInt(sondage));
-		System.out.println("compta :" + json);
+		//System.out.println("compta :" + json);
 		String json2 = json.replace("\"", "%");
-		System.out.println("test: " + json2);
+		//System.out.println("test: " + json2);
 			
 		
 		reponse += "<body style=\"font-family: Georgia, Times, serif;padding:20px;width:400px;border:1px solid #172183;\">";
@@ -120,7 +120,7 @@ public class SubmitHandler implements HttpHandler {
 				+ "</form>";
 			
 		
-		reponse+= "<p>Redirection en cours vers l'histogramme...</p>";
+		reponse+= "<p>Redirection en cours vers l'histogramme...(3s)</p>";
 		
 		reponse += "<form id=\"test\" action=\"http://localhost/histogramme/affichageHisto.php\" method=\"post\">"
 				+ "<input type=\"hidden\" name=\"json\" value=\""+ json2 +"\">"
@@ -131,9 +131,9 @@ public class SubmitHandler implements HttpHandler {
 		//reponse += "<img src=\"http://localhost/histogramme/generateur.php?json="+ json2 + "/>";
 		reponse += "</body>";
 		
-        BufferedWriter out = new BufferedWriter(new FileWriter(fichier));
+        /*BufferedWriter out = new BufferedWriter(new FileWriter(fichier));
         out.write(j.toString());
-        out.close();
+        out.close();*/
         
         //DISCUSSION POUR UPDATE L'USER---------------------------------------------------------------------
         Socket socket = null;

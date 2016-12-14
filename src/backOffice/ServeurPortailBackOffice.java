@@ -7,7 +7,6 @@ import java.io.UnsupportedEncodingException;
 
 import com.sun.net.httpserver.HttpServer;
 
-import certificats.ClientUDP;
 import certificats.CryptTools;
 import certificats.GenerationClesRSA;
 import certificats.GestionClesRSA;
@@ -40,7 +39,7 @@ public class ServeurPortailBackOffice {
 
     public static void main(String[] args) {
     	
-    	//ServeurPortailBackOffice.demandeCertificat();
+    	ServeurPortailBackOffice.demandeCertificat();
     	System.out.println("passage");
         HttpServer serveur = null;
         try {
@@ -68,8 +67,8 @@ public class ServeurPortailBackOffice {
     }
     
     public static void demandeCertificat() {
-    	String privateKeyFile="privee"+ServeurPortailBackOffice.class.getSimpleName()+".bin";
-        String publiqueKeyFile="publique"+ServeurPortailBackOffice.class.getSimpleName()+".bin";
+    	String privateKeyFile="clefs/privee"+ServeurPortailBackOffice.class.getSimpleName()+".bin";
+        String publiqueKeyFile="clefs/publique"+ServeurPortailBackOffice.class.getSimpleName()+".bin";
     	GenerationClesRSA.generateKeys(privateKeyFile, publiqueKeyFile);
         DatagramSocket socket = null;
     	// Création de la socket

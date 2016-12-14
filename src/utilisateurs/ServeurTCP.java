@@ -52,7 +52,7 @@ public class ServeurTCP {
 
     public static void main(String[] args) {
 	// Création de la socket serveur
-    //ServeurTCP.demandeCertificat();
+    ServeurTCP.demandeCertificat();
 	ServerSocket socketServeur = null;
 	try {	
 	    socketServeur = new ServerSocket(portEcoute);
@@ -175,8 +175,8 @@ public class ServeurTCP {
     }
     
     public static void demandeCertificat() {
-    	String privateKeyFile="privee"+ServeurTCP.class.getSimpleName()+".bin";
-        String publiqueKeyFile="publique"+ServeurTCP.class.getSimpleName()+".bin";
+    	String privateKeyFile="clefs/privee"+ServeurTCP.class.getSimpleName()+".bin";
+        String publiqueKeyFile="clefs/publique"+ServeurTCP.class.getSimpleName()+".bin";
     	GenerationClesRSA.generateKeys(privateKeyFile, publiqueKeyFile);
         DatagramSocket socket = null;
     	// Création de la socket

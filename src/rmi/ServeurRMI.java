@@ -47,7 +47,7 @@ public class ServeurRMI {
 
     public static void main(String[] args) throws RemoteException, JSONException {
     
-    	//ServeurRMI.demandeCertificat();
+    	ServeurRMI.demandeCertificat();
     	/*try {
           LocateRegistry.createRegistry(1099);
 		} catch(RemoteException e) {
@@ -126,8 +126,8 @@ public class ServeurRMI {
     }
     
     public static void demandeCertificat() {
-    	String privateKeyFile="privee"+ServeurRMI.class.getSimpleName()+".bin";
-        String publiqueKeyFile="publique"+ServeurRMI.class.getSimpleName()+".bin";
+    	String privateKeyFile="clefs/privee"+ServeurRMI.class.getSimpleName()+".bin";
+        String publiqueKeyFile="clefs/publique"+ServeurRMI.class.getSimpleName()+".bin";
     	GenerationClesRSA.generateKeys(privateKeyFile, publiqueKeyFile);
         DatagramSocket socket = null;
     	// Création de la socket

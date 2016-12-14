@@ -31,8 +31,10 @@ public class ServeurUDP {
     
     
     public static void main(String[] args) {
-    GenerationClesRSA.generateKeys("priveeAutorite.bin", "publiqueAutorite.bin");
+    GenerationClesRSA.generateKeys("clefs/priveeAutorite.bin", "clefs/publiqueAutorite.bin");
     // Création de la socket
+    int tour=0;
+    while(tour<3){
 	DatagramSocket socket = null;
 	try {	    
 	    socket = new DatagramSocket(portEcoute);
@@ -103,7 +105,7 @@ public class ServeurUDP {
 		}
 	    
 	    
-	    PublicKey publicKeyServer=GestionClesRSA.lectureClePublique("publiqueAutorite.bin");
+	    PublicKey publicKeyServer=GestionClesRSA.lectureClePublique("clefs/publiqueAutorite.bin");
 	    encodedKeyServer = Base64.getEncoder().encodeToString(publicKeyServer.getEncoded());
 	    
 	    encodedRandomString=encodedRandomString+"~~~"+encodedKeyServer;
@@ -138,7 +140,7 @@ public class ServeurUDP {
 	    System.exit(-1);
 	}
 	
-	PrivateKey privateKeyServer=GestionClesRSA.lectureClePrivee("priveeAutorite.bin");
+	PrivateKey privateKeyServer=GestionClesRSA.lectureClePrivee("clefs/priveeAutorite.bin");
 	String decodedRandomStringClient="";
 	try {
 		decodedRandomStringClient=CryptTools.decrypt(privateKeyServer, texte2);
@@ -172,7 +174,7 @@ public class ServeurUDP {
 		
 		// Cr�ation du fichier de sortie
 		FileWriter fs = null;
-		String jsonFile="certificat"+className+".json";
+		String jsonFile="certificats/certificat"+className+".json";
 		try {
 		    fs = new FileWriter(jsonFile);
 		} catch(IOException e) {
@@ -190,7 +192,7 @@ public class ServeurUDP {
 		    System.exit(-1);
 		}
 		
-		SignatureFichier.signer("priveeAutorite.bin", jsonFile, "signatures"+className+".bin");
+		SignatureFichier.signer("clefs/priveeAutorite.bin", jsonFile, "signatures/signatures"+className+".bin");
 		
 		File f=new File(jsonFile);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -227,6 +229,8 @@ public class ServeurUDP {
 	// Fermeture de la socket
 
 	    socket.close();
+    }
+    tour++;
     }
 
 }

@@ -29,7 +29,7 @@
 				                 "intitule":"Où habitez vous?",
 				                 "reponses":[
 				                 				{"lettre":"A",
-				                 				"libelle":"dtc"},
+				                 				"libelle":"Charleville"},
 				                 				{"lettre":"B",
 				                 				"libelle":"Reims"}			                 				
 				                 			]
@@ -69,7 +69,7 @@
 				                 "intitule":"Où habitez vous?",
 				                 "reponses":[
 				                 				{"lettre":"A",
-				                 				"libelle":"dtc"},
+				                 				"libelle":"Charleville"},
 				                 				{"lettre":"B",
 				                 				"libelle":"Reims"}			                 				
 				                 			]

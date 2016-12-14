@@ -49,9 +49,20 @@ public class ResultatsTotaux implements HttpHandler {
 			e1.printStackTrace();
 		}
 		
+		String json2 = "";
 		for (int i = 0 ; i < sondages.size() ; i++) {
 			reponse += array.affichageTotal(sondages.get(i).getId());
+			String compta = array.getCompta(sondages.get(i).getId());
+			json2 += compta.replace("\"", "%") + "~~~";
 		}
+		
+		reponse += "<p>Redirection en cours vers les histogrammes ... (3s)</p>";
+		reponse += "<form id=\"test\" action=\"http://localhost/histogramme/affichageHisto.php\" method=\"post\">"
+				+ "<input type=\"hidden\" name=\"json\" value=\""+ json2 +"\">"
+				+ "<input type=\"hidden\" name=\"login\" value=\""+ "admin" +"\">"
+				+ "</form>";
+		reponse += "<script>setTimeout(function(){document.getElementById(\"test\").submit();}, 3000);</script>";
+		
 		reponse += "<form action=\"http://localhost:8080/admin.html\">"
 				+ "<button style=\"border: none;color: #ffffff;display: block;margin: auto;background: #172183;padding: 5px 20px;cursor:pointer;\">Retour</button>"
 				+ "</form>";

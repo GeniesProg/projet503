@@ -1,1 +1,1 @@
-{"reponses":[]}
+{"reponses":[{"liste":[{"1":"A"},{"2":"B"},{"3":"B"}],"login":"user1","sondage":1},{"liste":[{"1":"C"},{"2":"B"},{"3":"A"},{"4":"B"}],"login":"user1","sondage":2},{"liste":[{"1":"B"},{"2":"C"},{"3":"A"}],"login":"user2","sondage":1},{"liste":[{"1":"C"},{"2":"D"},{"3":"B"},{"4":"B"}],"login":"user2","sondage":2},{"liste":[{"1":"A"},{"2":"B"}],"login":"user1","sondage":3}]}

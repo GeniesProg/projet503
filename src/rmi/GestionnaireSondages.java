@@ -52,7 +52,7 @@ public class GestionnaireSondages extends UnicastRemoteObject implements IGestio
 		// Création d'un objet JSON
 		JSONObject objet = new JSONObject(json);		
 		JSONArray tableau = objet.getJSONArray("compte");
-		System.out.println(tableau);
+		//System.out.println(tableau);
 		ArrayList<Compta> nouveau = new ArrayList<>();
 		for (int i = 0 ; i < tableau.length();i++) {			
 			JSONObject element =tableau.getJSONObject(i);
@@ -211,7 +211,7 @@ public class GestionnaireSondages extends UnicastRemoteObject implements IGestio
 
 	@Override
 	public void chargerSondages() throws RemoteException {
-		System.out.println("je suis passé par charger");
+		//System.out.println("je suis passé par charger");
 		FileInputStream fs = null;
     	try {
     	    fs = new FileInputStream(this.fichierSondages);
@@ -344,7 +344,7 @@ public class GestionnaireSondages extends UnicastRemoteObject implements IGestio
 
 	@Override
 	public void ajouterCompta(Compta c) throws RemoteException {
-		System.out.println("hello");
+		//System.out.println("hello");
 		this.chargerCompta();
 		this.compta.add(c);
 		this.sauvegarderCompta();
@@ -394,6 +394,6 @@ public class GestionnaireSondages extends UnicastRemoteObject implements IGestio
     			return j.toString();
     		}
     	}
-		return "tg";
+		return "probleme dans get compta";
 	}
 }
